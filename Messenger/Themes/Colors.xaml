@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Основные цвета-->
+    <SolidColorBrush x:Key="clrButton" Color="#AB69FF"/>
+    <SolidColorBrush x:Key="clrSecondaryText" Color="#909090"/>
+
+     <!--Акценты-->
+    <SolidColorBrush x:Key="OneLevelAccent" Color="#ADADAD"/>
+    <SolidColorBrush x:Key="TwoLevelAccent" Color="#848484"/>
+    <SolidColorBrush x:Key="ThreeLevelAccent" Color="#484848"/>
+    <SolidColorBrush x:Key="ButtonAccent" Color="#784ab3"/>
+    <SolidColorBrush x:Key="MessageAccent" Color="#D4F7FF"/>
+</ResourceDictionary>
