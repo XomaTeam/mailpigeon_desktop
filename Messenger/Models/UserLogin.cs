@@ -12,7 +12,7 @@ namespace Messenger.Models
     {
         [Required(ErrorMessage = "Требуется логин")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Минимальная длина логина 5 символов, максимальная 50")]
-        [RegularExpression("[A-Za-z0-9]", ErrorMessage = "В логине могут присутствовать только латинский буквы и цифры")]
+        [RegularExpression("[A-Za-z0-9]+", ErrorMessage = "В логине могут присутствовать только латинский буквы и цифры")]
         public string username { get; set; }
 
         [StringLength(30, MinimumLength = 4, ErrorMessage = "Минимальная длина пароля 4 символа, максимальная 30")]

@@ -189,6 +189,11 @@ namespace Messenger.Models
             var response = await TokenyzePost("http://109.174.29.40:8123/api/users/edit", data);
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception(response.StatusCode.ToString());
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Tokens tokens = JsonConvert.DeserializeObject<Tokens>(responseString);
+
+            db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
         }
             
         public async Task<string> GetMyName()
