@@ -113,6 +113,7 @@
     <Compile Include="Elements\HisMessengeBubble.xaml.cs">
       <DependentUpon>HisMessengeBubble.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApiAddresses.cs" />
     <Compile Include="Models\ApiRepository.cs" />
     <Compile Include="Models\ChatController.cs" />
     <Compile Include="Models\Contact.cs" />
