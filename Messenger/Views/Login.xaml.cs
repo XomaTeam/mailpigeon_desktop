@@ -32,21 +32,8 @@ namespace Messenger.Views
         {
             InitializeComponent();
             vm = new LoginVM();
-            TryLogin();
         }
 
-        private async void TryLogin()
-        {
-            try
-            {
-                if (await vm.CheckIfLoggedIn())
-                    NavigationService.Navigate(new Messenger());
-            }
-            catch (Exception ex) 
-            {
-                error_lbl.Content = ex.Message;                
-            }
-        }
 
         //Переход на страницу регистрации
         private void RegBut_Click(object sender, RoutedEventArgs e)
@@ -65,7 +52,7 @@ namespace Messenger.Views
             }
             catch(Exception ex)
             {
-                error_lbl.Content = ex.Message;
+                error_lbl.Text = ex.Message;
             }
 
             if (result)

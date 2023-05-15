@@ -32,7 +32,7 @@ namespace Messenger.Views
 
         private void BackBut_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Contacts());
+            NavigationService.GoBack();
         }
     }
 }

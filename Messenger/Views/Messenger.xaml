@@ -2,12 +2,14 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expres
+      sion/blend/2008" 
       xmlns:local="clr-namespace:Messenger.Views"
       mc:Ignorable="d" 
       d:DesignHeight="760" d:DesignWidth="1060"
       Title="Messenger"
-      Style="{StaticResource  MessengerPage}">
+      Style="{StaticResource  MessengerPage}" >
+    
     <Page.Resources>
         <ImageBrush x:Key="Contact" ImageSource="pack://application:,,,/Resources/Images/user.png"/>
     </Page.Resources>
@@ -30,19 +32,19 @@
         <!--Отображение контакта с которым ведётся переписка-->
         <Grid Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <Ellipse x:Name="ContactAvatar" Width="32" Height="32"
-                         Fill="{StaticResource Contact}" Margin="10 0 20 0"/>
-                <TextBlock Text="Имя Фамилия" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724"/>
+                <Image x:Name="ContactAvatar" Width="32" Height="32"
+                         Source="pack://application:,,,/Resources/Images/user.png" Margin="10 0 20 0"/>
+                <TextBlock x:Name="Username_tb" Text="Имя Фамилия" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1" >
             <!--Отображение сообщений-->
-            <ListBox x:Name="Messages_lb" HorizontalContentAlignment="Stretch" Margin="52,0,52,65" Style="{StaticResource MessagesPool}">
+            <ListBox x:Name="Messages_lb" VirtualizingPanel.ScrollUnit="Pixel" HorizontalContentAlignment="Stretch" Margin="52,0,52,65" Style="{StaticResource MessagesPool}">
             </ListBox>
             <!--Отправка сообщения Textbox'ом-->
             <Grid  VerticalAlignment="Bottom" >
-                <TextBox x:Name="Message_tb" Padding="0,0,50,0" Margin="50 5" Width="auto"/>
+                <TextBox x:Name="Message_tb" Padding="0,0,50,0" Margin="50 5" Width="auto" TextChanged="Message_tb_TextChanged"/>
                 <TextBlock Name="MessageTip" Text="Введите сообщение..." Style="{StaticResource Tip}"
                        Margin=" 60 0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <!--Отправка сообщения кнопкой-->

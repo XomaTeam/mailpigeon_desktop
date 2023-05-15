@@ -66,15 +66,8 @@
                 </Button.Content>
             </Button>
         </StackPanel>
-        <Label x:Name="error_lbl" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="1023" Grid.Column="1" HorizontalContentAlignment="Center" Foreground="#FFFF4B4B" Margin="0,350,0,0">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
+        <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow"  Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="268" Foreground="#FFFF4B4B" Margin="0,150,0,0" Grid.Column="2" Height="349">
+            
+        </TextBlock>
     </Grid>
 </Page>

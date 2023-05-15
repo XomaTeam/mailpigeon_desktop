@@ -1,4 +1,5 @@
-﻿using Messenger.Views;
+﻿using Messenger.ViewModels;
+using Messenger.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,28 @@ namespace Messenger
     /// </summary>
     public partial class MainWindow : Window
     {
+        LoginVM vm;
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.NavigationService.Navigate(new Login());
+            vm = new LoginVM();
+            TryLogin();
+        }
+
+        private async void TryLogin()
+        {
+            try
+            {
+                if (await vm.CheckIfLoggedIn())
+                    MainFrame.NavigationService.Navigate(new Messenger.Views.Messenger());
+                else  
+                    MainFrame.NavigationService.Navigate(new Login());
+
+            }
+            catch 
+            {
+                MainFrame.NavigationService.Navigate(new Login());
+            }
         }
     }
 }

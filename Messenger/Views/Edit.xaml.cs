@@ -49,5 +49,10 @@ namespace Messenger.Views
         {
 
         }
+
+        private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

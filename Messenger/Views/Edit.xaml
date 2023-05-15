@@ -33,10 +33,16 @@
             <Grid  HorizontalAlignment="Center">
                 <Ellipse Height="120" Width="120" Fill="{StaticResource User}"/>
                 <Ellipse Height="120" Width="120" Fill="Black" Opacity="0.4"/>
+                <Border CornerRadius="60,60,60,60">
+                    <Border.Background>
+                        <ImageBrush Stretch="Fill" ImageSource="pack://application:,,,/Resources/Images/user.png" />
+                    </Border.Background>
+                </Border>
                 <Button Style="{StaticResource IconButton}"
-                        Height="48" Width="54">
+                        Height="NaN" Width="NaN" Click="ChangeAvatar_Click">
                     <Button.Content>
-                        <Image Height="64" Width="64"  HorizontalAlignment="Center" VerticalAlignment="Center"
+
+                        <Image Height="64" Width="64"  HorizontalAlignment="Left" VerticalAlignment="Top"
                                Source="pack://application:,,,/Resources/Icons/Camera.png"/>
                     </Button.Content>
                 </Button>

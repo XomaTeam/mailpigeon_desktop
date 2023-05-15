@@ -66,7 +66,7 @@ namespace Messenger.Models
 
             var response = await client.PostAsync(address, stringContent);
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
             {
                 if(await RefreshToken())
                 {
@@ -85,7 +85,7 @@ namespace Messenger.Models
 
             var response = await client.GetAsync(address);
 
-            if(response.StatusCode == HttpStatusCode.Unauthorized)
+            if(response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
             {
                 if(await RefreshToken())
                 {
@@ -215,6 +215,11 @@ namespace Messenger.Models
             return bitmap;
         }
 
+        public async void SendAvatar(byte[] imageStream)
+        {
+            var response = await TokenyzePost("https://bigeny.ru/api/users/avatar/upload", imageStream);
+        }
+
         public async Task<List<Message>> GetMessages(int count, int recipientId)
         {
             var response = await TokenyzeGet($"https://bigeny.ru/api/messages/get?recipient_id={recipientId}&limit={count}");
@@ -224,6 +229,18 @@ namespace Messenger.Models
             string stringResponse = await response.Content.ReadAsStringAsync();
             var messages = JsonConvert.DeserializeObject<List<Message>>(stringResponse);
             return messages;
+        }
+
+        public async Task<User> GetUser(int userID)
+        {
+            var response = await TokenyzeGet($"https://bigeny.ru/api/users/get?user_id={userID}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Ошибка получения данных пользователя user_id=" + userID);
+            string stringResponse = await response.Content.ReadAsStringAsync();
+            var user = JsonConvert.DeserializeObject<User>(stringResponse);
+            return user;
+
         }
 
         public async Task ConnectWebSocket()
@@ -265,9 +282,9 @@ namespace Messenger.Models
             {
                 ReconnectIfDisconnected();
                 ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[1024]);
-                var msg = await ws.ReceiveAsync(buffer, tokenSource.Token);
-                if (msg == null)
+                if (ws.State != WebSocketState.Open)
                     break;
+                var msg = await ws.ReceiveAsync(buffer, tokenSource.Token);
                 var stringMsg = Encoding.UTF8.GetString(buffer.Array, 0, msg.Count);
                 var json = JsonConvert.DeserializeObject<Message>(stringMsg);
 

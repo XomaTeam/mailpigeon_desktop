@@ -23,5 +23,10 @@ namespace Messenger.ViewModels
         {
             api.EditName(newName);
         }
+
+        public void EditAvatar(byte[] avatar)
+        {
+            api.SendAvatar(avatar);
+        }
     }
 }

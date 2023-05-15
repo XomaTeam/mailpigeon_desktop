@@ -38,7 +38,7 @@ namespace Messenger.Views
 
         private void BackBut_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new SideMenu());
+            NavigationService.GoBack();
         }
 
         private void EditBut_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,6 @@ namespace Messenger.Views
             Application.Current.MainWindow = new MainWindow();
             Application.Current.MainWindow.Show();
             pastWindow.Close();
-            //NavigationService.Navigate(new Login());
         }
     }
 }

@@ -30,14 +30,29 @@ namespace Messenger.Views
             SideFrame.Navigate(new Contacts());
             ChatController.instance.SelectedDialogChanged += DialogChanged;
             ChatController.instance.NewMessage += ReceiveMessage;
+            this.KeyUp += KeyUp_Clicked;
             vm.ConnectToMessagesStream();
         }
 
         public async void DialogChanged(int newId)
         {
             Messages_lb.Items.Clear();
-            List<Message> messages = await vm.GetMessages(50, newId);
-            messages = messages.OrderByDescending(p => p.created_at).ToList();
+            try
+            {
+                ContactAvatar.Source = await vm.GetAvatar(newId);
+            }
+            catch
+            {
+                ContactAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/user.png"));
+            }
+            Username_tb.Text = await vm.GetUserNickname(newId);
+            CreateDialogMessages(newId);
+        }
+
+        public async void CreateDialogMessages(int id)
+        {
+            List<Message> messages = await vm.GetMessages(50, id);
+
             foreach (Message message in messages)
             {
 
@@ -50,10 +65,16 @@ namespace Messenger.Views
                     CreateHisMessage(message, false);
                 }
             }
+
+            if (Messages_lb.Items.Count > 0)
+                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
         }
 
         private void ReceiveMessage(Message msg)
         {
+            if (msg == null)
+                return;
+
             if (msg.sender_id == ChatController.instance.myID)
             {
                 CreateMyMessage(msg, true);
@@ -62,6 +83,7 @@ namespace Messenger.Views
             {
                 CreateHisMessage(msg, true);
             }
+            Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
         }
 
         private void CreateMyMessage(Message message, bool drawOnBottom)
@@ -90,10 +112,35 @@ namespace Messenger.Views
 
         private void Send_Clicked(object sender, RoutedEventArgs e)
         {
+            SendMessage();
+        }
+
+        private void SendMessage()
+        {
             if (Message_tb.Text.Trim().Length == 0)
                 return;
-            
+
             vm.SendMessage(Message_tb.Text);
+            Message_tb.Text = String.Empty;
+        }
+
+        private void Message_tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            if(textBox.Text.Length == 0)
+            {
+                MessageTip.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageTip.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void KeyUp_Clicked(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+                SendMessage();
         }
     }
 }
