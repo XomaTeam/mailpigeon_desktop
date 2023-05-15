@@ -48,17 +48,9 @@
                     <TextBlock Text="Войти" FontSize="32" Foreground="White"/>
                 </Button.Content>
             </Button>
-            <!--Забыли пароль-->
-            <Button HorizontalAlignment="Center" Style="{StaticResource SecBut}"
-                    Margin="0 30 0 40">
-                <Button.Content>
-                    <TextBlock Text="Забыли пароль?" Foreground="{StaticResource clrSecondaryText}"
-                               FontWeight="SemiBold" TextDecorations="Underline"/>
-                </Button.Content>
-            </Button>
             <!--Кнопка перехода на регистрация аккаунта-->
-            <Button x:Name="RegBut" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                    Style="{StaticResource SecBut}" Margin="0 0 0 20" Click="RegBut_Click">
+            <Button x:Name="RegBut" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                    Style="{StaticResource SecBut}" Click="RegBut_Click">
                 <Button.Content>
                     <TextBlock>
                         Нет аккаунта? <Bold><Underline> Зарегистрируйтесь</Underline></Bold>
@@ -66,7 +58,7 @@
                 </Button.Content>
             </Button>
         </StackPanel>
-        <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow"  Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="268" Foreground="#FFFF4B4B" Margin="0,150,0,0" Grid.Column="2" Height="349">
+        <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow"  Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="268" Foreground="#FFFF4B4B" Margin="31,280,31,0" Grid.Column="2" Height="349">
             
         </TextBlock>
     </Grid>

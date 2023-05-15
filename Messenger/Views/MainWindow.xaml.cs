@@ -38,7 +38,6 @@ namespace Messenger
                     MainFrame.NavigationService.Navigate(new Messenger.Views.Messenger());
                 else  
                     MainFrame.NavigationService.Navigate(new Login());
-
             }
             catch 
             {

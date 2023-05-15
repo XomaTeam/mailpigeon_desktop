@@ -23,15 +23,16 @@ namespace Messenger.Views
     public partial class Messenger : Page
     {
         MessengerVM vm = new MessengerVM();
+        LoginVM loginVM = new LoginVM();
 
         public Messenger()
         {
             InitializeComponent();
+            vm.ConnectToMessagesStream();
             SideFrame.Navigate(new Contacts());
             ChatController.instance.SelectedDialogChanged += DialogChanged;
             ChatController.instance.NewMessage += ReceiveMessage;
             this.KeyUp += KeyUp_Clicked;
-            vm.ConnectToMessagesStream();
         }
 
         public async void DialogChanged(int newId)
@@ -52,6 +53,8 @@ namespace Messenger.Views
         public async void CreateDialogMessages(int id)
         {
             List<Message> messages = await vm.GetMessages(50, id);
+
+            messages = messages.OrderByDescending(p => p.created_at).ToList();
 
             foreach (Message message in messages)
             {
@@ -91,7 +94,9 @@ namespace Messenger.Views
             var bubble = new MyMessengeBubble();
             bubble.text = message.message_text;
             bubble.HorizontalAlignment = HorizontalAlignment.Right;
-            bubble.time = message.created_at.ToString();
+            TimeZoneInfo zoneInfo = TimeZoneInfo.Local;
+            DateTime time = TimeZoneInfo.ConvertTimeFromUtc(message.created_at, zoneInfo);
+            bubble.time = time.ToString();
             if(drawOnBottom)
                 Messages_lb.Items.Add(bubble);
             else
@@ -103,7 +108,9 @@ namespace Messenger.Views
             var bubble = new HisMessengeBubble();
             bubble.text = message.message_text;
             bubble.HorizontalAlignment = HorizontalAlignment.Left;
-            bubble.time = message.created_at.ToString();
+            TimeZoneInfo zoneInfo = TimeZoneInfo.Local;
+            DateTime time = TimeZoneInfo.ConvertTimeFromUtc(message.created_at, zoneInfo);
+            bubble.time = time.ToString();
             if (drawOnBottom)
                 Messages_lb.Items.Add(bubble);
             else
@@ -118,6 +125,9 @@ namespace Messenger.Views
         private void SendMessage()
         {
             if (Message_tb.Text.Trim().Length == 0)
+                return;
+
+            if (ChatController.instance.currentDialog == 0)
                 return;
 
             vm.SendMessage(Message_tb.Text);

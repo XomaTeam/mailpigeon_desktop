@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,21 @@ namespace Messenger.Views
 
         private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
+            dlg.DefaultExt = ".png";
+            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+            bool? result = dlg.ShowDialog();
+            if (result == true)
+            {
+                FileInfo fileInfo = new FileInfo(dlg.FileName);
+                byte[] data = new byte[fileInfo.Length];
+                using(FileStream fs = fileInfo.OpenRead())
+                {
+                    fs.Read(data, 0, data.Length);
+                }
+                vm.EditAvatar(data);
+            }
         }
     }
 }

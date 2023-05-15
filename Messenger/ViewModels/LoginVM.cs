@@ -28,7 +28,7 @@ namespace Messenger.ViewModels
             if (result)
             {
                 db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
-                await api.GetMyName();
+                await api.UpdateSessionInfo();
             }
             return result;
         }
@@ -41,6 +41,7 @@ namespace Messenger.ViewModels
             if (result)
             {
                 db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
+                await api.UpdateSessionInfo();
             }
             return result;
         }

@@ -21,6 +21,9 @@ namespace Messenger.ViewModels
 
         public void EditName(string newName)
         {
+            if (String.IsNullOrEmpty(newName))
+                return;
+
             api.EditName(newName);
         }
 

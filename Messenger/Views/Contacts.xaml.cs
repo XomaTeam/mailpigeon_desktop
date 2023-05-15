@@ -36,6 +36,7 @@ namespace Messenger.Views
         {
             try
             {
+                vm.UpdateContacts();
                 List<Contact> contacts = await vm.GetAllUsers();
                 contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
                 foreach (var user in contacts)

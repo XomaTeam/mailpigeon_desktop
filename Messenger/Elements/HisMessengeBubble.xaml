@@ -16,7 +16,7 @@
     </Border>
 
     <TextBlock x:Name="time_tb" Text="{Binding Path=time}" MaxWidth="500" Style="{StaticResource MessageTextBox}" Grid.Row="0"/>
-    <TextBlock x:Name="text_tb" TextWrapping="Wrap" MaxWidth="500" Style="{StaticResource MessageTextBox}" Text="{Binding Path=text}" FontSize="10" Grid.Row="1"/>
+    <TextBlock x:Name="text_tb" TextWrapping="Wrap" MaxWidth="500" Style="{StaticResource MessageTextBox}" Text="{Binding Path=text}" FontSize="15" Grid.Row="1"/>
     <TextBlock x:Name="status_tb" TextWrapping="Wrap" MaxWidth="500" Style="{StaticResource MessageTextBox}" Text="{Binding Path=status}" FontSize="10" Grid.Row="2"/>
 
 </Grid>

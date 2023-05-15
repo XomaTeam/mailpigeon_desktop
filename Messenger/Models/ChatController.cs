@@ -1,6 +1,7 @@
 ﻿using Messenger.Models.Database;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -21,6 +22,7 @@ namespace Messenger.Models
                 return _instance;
             }
         }
+
         public int myID;
         private int _currentDialog;
         public int currentDialog

@@ -73,7 +73,7 @@ namespace Messenger.Models.Database
             return id;
         }
 
-        public async void SetMyID(int id)
+        public async Task SetMyID(int id)
         {
             var users = await conn.Table<UserData>().ToListAsync();
             users[0].userId = id.ToString();

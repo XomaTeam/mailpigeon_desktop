@@ -28,5 +28,10 @@ namespace Messenger.ViewModels
         {
             return await api.GetAvatar(userId);
         }
+
+        public async void UpdateContacts()
+        {
+            api.GetMyName();
+        }
     }
 }
