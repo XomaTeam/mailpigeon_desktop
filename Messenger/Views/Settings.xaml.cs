@@ -1,4 +1,5 @@
-﻿using Messenger.ViewModels;
+﻿using Messenger.Models;
+using Messenger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,18 @@ namespace Messenger.Views
         {
             InitializeComponent();
             vm = new SettingsVM();
-            SetName();
+            ChatController.instance.UsernameChanged += OnUsernameUpdated;
+            SetName(ChatController.instance.myUsername);
         }
 
-        private async void SetName()
+        private async void SetName(string username)
         {
-            Username_tb.Text = await vm.GetName();
+            Username_tb.Text = username;
+        }
+
+        private void OnUsernameUpdated(string username) 
+        {
+            Username_tb.Text = username;
         }
 
         private void BackBut_Click(object sender, RoutedEventArgs e)

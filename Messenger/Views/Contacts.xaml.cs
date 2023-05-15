@@ -1,4 +1,5 @@
 ﻿using Messenger.Models;
+using Messenger.Properties;
 using Messenger.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Messenger.Views
     public partial class Contacts : Page
     {
         ContactsVM vm = new ContactsVM();
-        
+        List<Contact> contacts;
 
         public Contacts()
         {
@@ -37,7 +38,7 @@ namespace Messenger.Views
             try
             {
                 vm.UpdateContacts();
-                List<Contact> contacts = await vm.GetAllUsers();
+                contacts = await vm.GetAllUsers();
                 contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
                 foreach (var user in contacts)
                 {
@@ -48,7 +49,7 @@ namespace Messenger.Views
                     }
                     catch
                     {
-                        user.avatar = "pack://application:,,,/Resources/Images/user.png";
+                        user.avatar = Properties.Resources.DefaultAvatarPath;
                     }
 
                 }
@@ -57,6 +58,19 @@ namespace Messenger.Views
             catch(Exception ex) 
             {
                 Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void Search(string search_name)
+        {
+            if (!string.IsNullOrEmpty(search_name))
+            {
+                var finded = from contact in contacts where contact.username.ToLower().StartsWith(search_name.ToLower()) select contact;
+                ContactsList.ItemsSource = finded;
+            }
+            else
+            {
+                ContactsList.ItemsSource = contacts;
             }
         }
 
@@ -72,6 +86,20 @@ namespace Messenger.Views
                 return;
 
             ChatController.instance.currentDialog = item.id;
+        }
+
+        private void Search_tb_Changed(object sender, TextChangedEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            Search(tb.Text);
+            if (tb.Text.Length == 0)
+            {
+                SearchTip.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                SearchTip.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Messenger.Models
 {
     public class ApiAddresses
     {
-        public static string BASE_URL = "http://109.174.29.40:8123/api";
-        public static string BASE_WEB_SOCKET = "ws://109.174.29.40:8123/api";
+        public static string BASE_URL = "https://bigeny.ru/api";
+        public static string BASE_WEB_SOCKET = "wss://bigeny.ru/api";
     }
 }

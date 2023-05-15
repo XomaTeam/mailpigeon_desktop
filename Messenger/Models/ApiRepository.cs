@@ -208,17 +208,15 @@ namespace Messenger.Models
             
             if (user != null)
             {
-                await db.SetMyID(user.id);
-                ChatController.instance.myID = user.id;
                 return user.username;
             }
+
             return null;
         }
 
         public async Task UpdateSessionInfo()
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
-
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception("Ошибка получения данных пользователя");
 
@@ -229,6 +227,7 @@ namespace Messenger.Models
             {
                 await db.SetMyID(user.id);
                 ChatController.instance.myID = user.id;
+                ChatController.instance.myUsername = user.username;
             }
         }
 
@@ -270,6 +269,7 @@ namespace Messenger.Models
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения сообщений");
+
             string stringResponse = await response.Content.ReadAsStringAsync();
             var messages = JsonConvert.DeserializeObject<List<Message>>(stringResponse);
             return messages;
@@ -292,7 +292,7 @@ namespace Messenger.Models
             ws = new ClientWebSocket();
             if(ChatController.instance.myID == 0)
             {
-                await GetMyName();
+                UpdateSessionInfo();
             }
 
             await ws.ConnectAsync(new Uri($"{ApiAddresses.BASE_WEB_SOCKET}/messages/ws/{ChatController.instance.myID}"), tokenSource.Token);

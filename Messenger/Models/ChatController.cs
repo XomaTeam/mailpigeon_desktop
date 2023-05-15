@@ -24,13 +24,23 @@ namespace Messenger.Models
         }
 
         public int myID;
+        private string _myUsername;
+        public string myUsername
+        {
+            set
+            {
+                _myUsername = value;
+                UsernameChanged?.Invoke(value);
+            }
+            get { return _myUsername; }
+        }
         private int _currentDialog;
         public int currentDialog
         {
             set
             {
-                SelectedDialogChanged?.Invoke(value);
                 _currentDialog = value;
+                SelectedDialogChanged?.Invoke(value);
             }
             get
             {
@@ -42,6 +52,9 @@ namespace Messenger.Models
 
         public delegate void MessageHandler(Message msg);
         public event MessageHandler NewMessage;
+
+        public delegate void UsernameHandler(string username);
+        public event UsernameHandler UsernameChanged;
 
         private ChatController() 
         {

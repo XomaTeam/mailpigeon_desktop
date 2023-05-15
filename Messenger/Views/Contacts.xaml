@@ -22,7 +22,7 @@
 
             <!--Поиск-->
             <Grid>
-                <TextBox Width="190" Height="30"/>
+                <TextBox Padding="35,0,0,0" Width="190" Height="30" TextChanged="Search_tb_Changed"/>
                 <Image Height="15" Width="15" HorizontalAlignment="Left" Margin=" 10 0 0 0"
                        Source="pack://application:,,,/Resources/Icons/Search.png"/>
                 <TextBlock x:Name="SearchTip" Text="Поиск" Style="{StaticResource Tip}"

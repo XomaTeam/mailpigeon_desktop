@@ -31,7 +31,7 @@ namespace Messenger.ViewModels
 
         public async void UpdateContacts()
         {
-            api.GetMyName();
+            api.UpdateSessionInfo();
         }
     }
 }

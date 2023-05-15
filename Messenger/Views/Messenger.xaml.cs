@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Messenger.Models;
+using Messenger.Properties;
 using Messenger.ViewModels;
 
 namespace Messenger.Views
@@ -44,7 +45,7 @@ namespace Messenger.Views
             }
             catch
             {
-                ContactAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/user.png"));
+                ContactAvatar.Source = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
             }
             Username_tb.Text = await vm.GetUserNickname(newId);
             CreateDialogMessages(newId);
