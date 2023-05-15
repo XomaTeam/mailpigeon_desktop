@@ -123,7 +123,7 @@ namespace Messenger.Models
         {
             string refreshToken = await db.GetRefreshTokenAsync();
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", refreshToken);
-            var response = await client.PostAsync("http://109.174.29.40:8123/api/auth/refresh", null);
+            var response = await client.PostAsync($"{ApiAddresses.BASE_URL}/auth/refresh", null);
             var tokens = JsonConvert.DeserializeObject<Tokens>(await response.Content.ReadAsStringAsync());
             var results = new List<ValidationResult>();
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -138,7 +138,7 @@ namespace Messenger.Models
         public async Task<Tokens> Login(string username, string password)
         {
             var data = new UserLogin(username, password);
-            var response = await NonTokenyzePost("http://109.174.29.40:8123/api/auth/login", data);
+            var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/login", data);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("Неверный логин или пароль");
@@ -153,7 +153,7 @@ namespace Messenger.Models
 
         public async Task<bool> Logout()
         {
-            await TokenyzePost("http://109.174.29.40:8123/api/auth/logout", null);
+            await TokenyzePost($"{ApiAddresses.BASE_URL}/auth/logout", null);
             db.Clear();
             await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Выход из аккаунта", tokenSource.Token);
             ws.Dispose();
@@ -168,7 +168,7 @@ namespace Messenger.Models
             if (!Validator.TryValidateObject(data, new ValidationContext(data), results, true))
                 throw new Exception(results[0].ErrorMessage);
 
-            var response = await NonTokenyzePost("http://109.174.29.40:8123/api/auth/signup", data);
+            var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/signup", data);
 
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception(response.StatusCode.ToString());
@@ -186,7 +186,7 @@ namespace Messenger.Models
             if(!Validator.TryValidateObject(data,new ValidationContext(data), results, false))
                 throw new Exception(results[0].ErrorMessage);
 
-            var response = await TokenyzePost("http://109.174.29.40:8123/api/users/edit", data);
+            var response = await TokenyzePost($"{ApiAddresses.BASE_URL}/users/edit", data);
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception(response.StatusCode.ToString());
 
@@ -198,7 +198,7 @@ namespace Messenger.Models
             
         public async Task<string> GetMyName()
         {
-            var response = await TokenyzeGet("http://109.174.29.40:8123/api/users/me");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
             
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception("Ошибка получения данных пользователя");
@@ -217,7 +217,7 @@ namespace Messenger.Models
 
         public async Task UpdateSessionInfo()
         {
-            var response = await TokenyzeGet("http://109.174.29.40:8123/api/users/me");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
 
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception("Ошибка получения данных пользователя");
@@ -234,7 +234,7 @@ namespace Messenger.Models
 
         public async Task<List<Contact>> GetAllUsers()
         {
-            var response = await TokenyzeGet("http://109.174.29.40:8123/api/users/all");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/all");
 
             if (response.StatusCode == HttpStatusCode.Forbidden)
                 throw new Exception("Сессия устарела");
@@ -251,7 +251,7 @@ namespace Messenger.Models
 
         public async Task<BitmapImage> GetAvatar(int userId)
         {
-            var response = await TokenyzeGet("http://109.174.29.40:8123/api/users/avatar/download?user_id=" + userId);
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/avatar/download?user_id=" + userId);
             var bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
@@ -261,12 +261,12 @@ namespace Messenger.Models
 
         public async void SendAvatar(byte[] imageStream)
         {
-            var response = await TokenyzePostImage("http://109.174.29.40:8123/api/users/avatar/upload", imageStream);
+            var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/users/avatar/upload", imageStream);
         }
 
         public async Task<List<Message>> GetMessages(int count, int recipientId)
         {
-            var response = await TokenyzeGet($"http://109.174.29.40:8123/api/messages/get?recipient_id={recipientId}&limit={count}");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения сообщений");
@@ -277,7 +277,7 @@ namespace Messenger.Models
 
         public async Task<User> GetUser(int userID)
         {
-            var response = await TokenyzeGet($"http://109.174.29.40:8123/api/users/get?user_id={userID}");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/get?user_id={userID}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения данных пользователя user_id=" + userID);
@@ -295,7 +295,7 @@ namespace Messenger.Models
                 await GetMyName();
             }
 
-            await ws.ConnectAsync(new Uri($"ws://109.174.29.40:8123/api/messages/ws/{ChatController.instance.myID}"), tokenSource.Token);
+            await ws.ConnectAsync(new Uri($"{ApiAddresses.BASE_WEB_SOCKET}/messages/ws/{ChatController.instance.myID}"), tokenSource.Token);
 
             ReceiveMessages();
         }
