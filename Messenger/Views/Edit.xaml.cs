@@ -43,6 +43,7 @@ namespace Messenger.Views
         {
             try
             {
+                Debug.WriteLine(newAvatarPath);
                 if(isAvatarChanged)
                     vm.EditAvatar(newAvatarPath);
 
@@ -71,6 +72,7 @@ namespace Messenger.Views
             if (result == true)
             {
                 isAvatarChanged = true;
+                MyAvatar.ImageSource = new BitmapImage(new Uri(dlg.FileName));
                 newAvatarPath = dlg.FileName;
             }
         }
@@ -82,7 +84,11 @@ namespace Messenger.Views
 
         private async void On_Loaded(object sender, RoutedEventArgs e)
         {
-            MyAvatar.ImageSource = await vm.GetMyAvatar();
+            var avatar = await vm.GetMyAvatar();
+            if (avatar != null)
+                MyAvatar.ImageSource = avatar;
+            else
+                MyAvatar.ImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
         }
     }
 }

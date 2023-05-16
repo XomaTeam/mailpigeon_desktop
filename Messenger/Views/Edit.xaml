@@ -31,15 +31,17 @@
             </Grid>
             <!--Изображение пользователя-->
             <Grid  HorizontalAlignment="Center" Height="94" Width="110">
-                
                 <Button Style="{StaticResource IconButton}"
                         Height="NaN" Width="NaN" Click="ChangeAvatar_Click">
                     <Button.Content>
-                        <Border CornerRadius="60,60,60,60" Margin="0,0,0,-6">
-                            <Border.Background>
-                                <ImageBrush x:Name="MyAvatar" Stretch="Fill" ImageSource="pack://application:,,,/Resources/Images/user.png" />
-                            </Border.Background>
-                        </Border>
+                        <Grid>
+                            <Image Panel.ZIndex="2" Source="pack://application:,,,/Resources/Icons/Camera.png" Margin="18,16,18,16"/>
+                            <Border Height="95" Width="109" CornerRadius="60,60,60,60">
+                                <Border.Background>
+                                    <ImageBrush x:Name="MyAvatar" Stretch="Fill" ImageSource="pack://application:,,,/Resources/Images/user.png" />
+                                </Border.Background>
+                            </Border>
+                        </Grid>
                     </Button.Content>
                 </Button>
             </Grid>

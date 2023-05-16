@@ -65,7 +65,11 @@ namespace Messenger.Views
 
         private async void On_Loaded(object sender, RoutedEventArgs e)
         {
-            MyAvatar.Source = await vm.GetMyAvatar();
+            var avatar = await vm.GetMyAvatar();
+            if (avatar != null)
+                MyAvatar.Source = avatar;
+            else
+                MyAvatar.Source = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
         }
     }
 }

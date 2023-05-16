@@ -62,9 +62,11 @@ namespace Messenger.Models
         private async Task<HttpResponseMessage> TokenyzePostImage(string address, string filepath)
         {
             var content = new MultipartFormDataContent();
-            var streamContent = new StreamContent(File.OpenRead(filepath));
-            streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-            content.Add(streamContent, "file", "file.png");
+            var file = File.OpenRead(filepath);
+            var streamContent = new StreamContent(file);
+            var ext = Path.GetExtension(filepath).Remove(0,1);
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue($"image/{ext}");
+            content.Add(streamContent, "file", Path.GetFileName(filepath));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
             var response = await client.PostAsync(address, content);
             string stringResponse = await response.Content.ReadAsStringAsync();
@@ -252,12 +254,16 @@ namespace Messenger.Models
 
         public async Task<BitmapImage> GetAvatar(int userId)
         {
-            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/avatar/download?user_id=" + userId);
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
-            bitmap.EndInit();
-            return bitmap;
+            try
+            {
+                var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/avatar/download?user_id=" + userId);
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
+                bitmap.EndInit();
+                return bitmap;
+            }
+            catch { return null; }
         }
 
         public async void SendAvatar(string filepath)

@@ -3,6 +3,7 @@ using Messenger.Properties;
 using Messenger.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -42,16 +43,11 @@ namespace Messenger.Views
                 contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
                 foreach (var user in contacts)
                 {
-                    try
-                    {
                         var avatar = await vm.GetUserAvatar(user.id);
+                    if(avatar != null)
                         user.avatar = avatar;
-                    }
-                    catch
-                    {
+                    else
                         user.avatar = Properties.Resources.DefaultAvatarPath;
-                    }
-
                 }
                 ContactsList.ItemsSource = contacts;
             }

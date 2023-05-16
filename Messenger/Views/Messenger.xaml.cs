@@ -39,14 +39,13 @@ namespace Messenger.Views
         public async void DialogChanged(int newId)
         {
             Messages_lb.Items.Clear();
-            try
-            {
-                ContactAvatar.ImageSource = await vm.GetAvatar(newId);
-            }
-            catch
-            {
+            var avatar = await vm.GetAvatar(newId);
+
+            if(avatar != null) 
+                ContactAvatar.ImageSource = avatar;
+            else
                 ContactAvatar.ImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
-            }
+            
             Username_tb.Text = await vm.GetUserNickname(newId);
             CreateDialogMessages(newId);
         }
