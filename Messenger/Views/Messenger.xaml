@@ -37,7 +37,7 @@
                         <ImageBrush x:Name="ContactAvatar" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
-                <TextBlock x:Name="Username_tb" Text="Имя Фамилия" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724" Margin="20,0,0,0"/>
+                <TextBlock x:Name="Username_tb" Text="Имя пользователя" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724" Margin="20,0,0,0"/>
             </StackPanel>
         </Grid>
 
