@@ -74,7 +74,7 @@ namespace Messenger.Models
             {
                 if (await RefreshToken())
                 {
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
                     return await client.PostAsync(address, content);
 
                 }
@@ -88,7 +88,7 @@ namespace Messenger.Models
             string json = JsonConvert.SerializeObject(content);
             StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
 
             var response = await client.PostAsync(address, stringContent);
 
@@ -96,7 +96,7 @@ namespace Messenger.Models
             {
                 if(await RefreshToken())
                 {
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
                     return await client.PostAsync(address, stringContent);
 
                 }
@@ -107,7 +107,7 @@ namespace Messenger.Models
 
         private async Task<HttpResponseMessage> TokenyzeGet(string address)
         {
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
 
             var response = await client.GetAsync(address);
 
@@ -115,7 +115,7 @@ namespace Messenger.Models
             {
                 if(await RefreshToken())
                 {
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
                     return await client.GetAsync(address);
                 }
             }
@@ -126,7 +126,7 @@ namespace Messenger.Models
         private async Task<bool> RefreshToken()
         {
             string refreshToken = await db.GetRefreshTokenAsync();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", refreshToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", refreshToken);
             var response = await client.PostAsync($"{ApiAddresses.BASE_URL}/auth/refresh", null);
             var tokens = JsonConvert.DeserializeObject<Tokens>(await response.Content.ReadAsStringAsync());
             var results = new List<ValidationResult>();
@@ -256,7 +256,7 @@ namespace Messenger.Models
         {
             try
             {
-                var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/avatar/download?user_id=" + userId);
+                var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/avatar/download?user_id=" + userId);
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
@@ -268,7 +268,7 @@ namespace Messenger.Models
 
         public async void SendAvatar(string filepath)
         {
-            var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/users/avatar/upload", filepath);
+            var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/avatar/upload", filepath);
         }
 
         public async Task<List<Message>> GetMessages(int count, int recipientId)
@@ -294,13 +294,13 @@ namespace Messenger.Models
             return user;
 
         }
-
+         
         public async Task ConnectWebSocket()
         {
             ws = new ClientWebSocket();
             if(ChatController.instance.myID == 0)
             {
-                UpdateSessionInfo();
+                await UpdateSessionInfo();
             }
 
             await ws.ConnectAsync(new Uri($"{ApiAddresses.BASE_WEB_SOCKET}/messages/ws/{ChatController.instance.myID}"), tokenSource.Token);

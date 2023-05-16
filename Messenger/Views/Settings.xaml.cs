@@ -31,7 +31,6 @@ namespace Messenger.Views
             vm = new SettingsVM();
             this.Loaded += On_Loaded;
             ChatController.instance.UsernameChanged += OnUsernameUpdated;
-            SetName(ChatController.instance.myUsername);
         }
 
         private void SetName(string username)
@@ -65,6 +64,8 @@ namespace Messenger.Views
 
         private async void On_Loaded(object sender, RoutedEventArgs e)
         {
+            await vm.UpdateUserInfo();
+            SetName(ChatController.instance.myUsername);
             var avatar = await vm.GetMyAvatar();
             if (avatar != null)
                 MyAvatar.Source = avatar;

@@ -35,5 +35,10 @@ namespace Messenger.ViewModels
         {
             return await api.GetAvatar(ChatController.instance.myID);
         }
+
+        public async Task UpdateUserInfo()
+        {
+            await api.UpdateSessionInfo();
+        }
     }
 }
