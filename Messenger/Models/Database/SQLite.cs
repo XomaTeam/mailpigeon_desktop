@@ -29,7 +29,7 @@ namespace Messenger.Models.Database
             return false;
         }
 
-        public async void SetTokensAsync(string access_token, string refresh_token)
+        public async Task SetTokensAsync(string access_token, string refresh_token)
         {
             var users = await conn.Table<UserData>().ToListAsync();
             if (users.Count == 0)

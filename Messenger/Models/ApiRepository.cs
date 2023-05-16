@@ -135,7 +135,7 @@ namespace Messenger.Models
             if (!Validator.TryValidateObject(tokens, new ValidationContext(tokens), results, true))
                 return false;
 
-            db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
+            await db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
             return true;
         }
 

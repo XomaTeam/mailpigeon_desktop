@@ -39,17 +39,17 @@ namespace Messenger.Views
         public async void DialogChanged(int newId)
         {
             Messages_lb.Items.Clear();
+            await SetDialogUsername(newId);
+            await CreateDialogMessages(newId);
             SetDialogAvatar(newId);
-            SetDialogUsername(newId);
-            CreateDialogMessages(newId);
         }
 
-        private async void SetDialogUsername(int userID)
+        private async Task SetDialogUsername(int userID)
         {
             Username_tb.Text = await vm.GetUserNickname(userID);
         }
 
-        private async void SetDialogAvatar(int userID)
+        private async Task SetDialogAvatar(int userID)
         {
             var avatar = await vm.GetAvatar(userID);
 
@@ -59,7 +59,7 @@ namespace Messenger.Views
                 ContactAvatar.ImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
         }
 
-        public async void CreateDialogMessages(int id)
+        public async Task CreateDialogMessages(int id)
         {
             List<Message> messages = await vm.GetMessages(50, id);
 
