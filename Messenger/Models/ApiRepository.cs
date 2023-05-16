@@ -338,6 +338,7 @@ namespace Messenger.Models
                 ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[1024]);
                 if (ws.State != WebSocketState.Open)
                     break;
+                ReconnectIfDisconnected();
                 var msg = await ws.ReceiveAsync(buffer, tokenSource.Token);
                 var stringMsg = Encoding.UTF8.GetString(buffer.Array, 0, msg.Count);
                 var json = JsonConvert.DeserializeObject<Message>(stringMsg);
