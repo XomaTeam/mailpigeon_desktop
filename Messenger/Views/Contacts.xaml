@@ -34,8 +34,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image Stretch="UniformToFill" Height="64" Width="64" Source="{Binding avatar}"/>
-                            <StackPanel>
+                        <Border Height="60" Width="60" CornerRadius="60,60,60,60">
+                            <Border.Background>
+                                <ImageBrush Stretch="UniformToFill" ImageSource="{Binding avatar}"/>
+                            </Border.Background>
+                        </Border>
+                        <StackPanel>
                                 <TextBlock Text="{Binding username}"/>
                             </StackPanel>
                         </StackPanel>

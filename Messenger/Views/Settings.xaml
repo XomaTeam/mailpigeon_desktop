@@ -28,7 +28,7 @@
                 </Button>
             </Grid>
             <!--Изображение пользователя-->
-            <Image Width="250" Height="250"
+            <Image x:Name="MyAvatar" Stretch="Fill" Width="250" Height="250"
                 Source="pack://application:,,,/Resources/Images/user.png"/>
             
             <!--Фамилия, имя, статус-->

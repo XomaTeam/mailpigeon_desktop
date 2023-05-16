@@ -1,4 +1,5 @@
-﻿using Messenger.ViewModels;
+﻿using Messenger.Models;
+using Messenger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,10 +24,14 @@ namespace Messenger.Views
     /// </summary>
     public partial class Edit : Page
     {
+        bool isAvatarChanged = false;
+        string newAvatarPath = string.Empty;
         EditVM vm = new EditVM();
         public Edit()
         {
             InitializeComponent();
+            Loaded += On_Loaded;
+            Unloaded += On_Unloaded;
         }
 
         private void BackBut_Click(object sender, RoutedEventArgs e)
@@ -38,9 +43,14 @@ namespace Messenger.Views
         {
             try
             {
-                vm.EditName(Login_tb.Text);
+                if(isAvatarChanged)
+                    vm.EditAvatar(newAvatarPath);
+
+                if (!String.IsNullOrEmpty(Login_tb.Text))
+                    vm.EditName(Login_tb.Text);
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -60,14 +70,19 @@ namespace Messenger.Views
             bool? result = dlg.ShowDialog();
             if (result == true)
             {
-                FileInfo fileInfo = new FileInfo(dlg.FileName);
-                byte[] data = new byte[fileInfo.Length];
-                using(FileStream fs = fileInfo.OpenRead())
-                {
-                    fs.Read(data, 0, data.Length);
-                }
-                vm.EditAvatar(data);
+                isAvatarChanged = true;
+                newAvatarPath = dlg.FileName;
             }
+        }
+
+        private void On_Unloaded(object sender, RoutedEventArgs e)
+        {
+            isAvatarChanged = false;
+        }
+
+        private async void On_Loaded(object sender, RoutedEventArgs e)
+        {
+            MyAvatar.ImageSource = await vm.GetMyAvatar();
         }
     }
 }

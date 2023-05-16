@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace Messenger.Models
 {
@@ -58,14 +59,15 @@ namespace Messenger.Models
             return response;
         }
 
-        private async Task<HttpResponseMessage> TokenyzePostImage(string address, byte[] data)
+        private async Task<HttpResponseMessage> TokenyzePostImage(string address, string filepath)
         {
             var content = new MultipartFormDataContent();
-            content.Add(new StreamContent(new MemoryStream(data)), "Avatar" + await db.GetMyID(), $"Avatar{await db.GetMyID()}.png");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
-
+            var streamContent = new StreamContent(File.OpenRead(filepath));
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            content.Add(streamContent, "file", "file.png");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await db.GetAccessTokenAsync());
             var response = await client.PostAsync(address, content);
-
+            string stringResponse = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
             {
                 if (await RefreshToken())
@@ -258,9 +260,9 @@ namespace Messenger.Models
             return bitmap;
         }
 
-        public async void SendAvatar(byte[] imageStream)
+        public async void SendAvatar(string filepath)
         {
-            var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/users/avatar/upload", imageStream);
+            var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/users/avatar/upload", filepath);
         }
 
         public async Task<List<Message>> GetMessages(int count, int recipientId)

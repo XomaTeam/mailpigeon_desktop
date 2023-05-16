@@ -30,20 +30,16 @@
                 </Button>
             </Grid>
             <!--Изображение пользователя-->
-            <Grid  HorizontalAlignment="Center">
-                <Ellipse Height="120" Width="120" Fill="{StaticResource User}"/>
-                <Ellipse Height="120" Width="120" Fill="Black" Opacity="0.4"/>
-                <Border CornerRadius="60,60,60,60">
-                    <Border.Background>
-                        <ImageBrush Stretch="Fill" ImageSource="pack://application:,,,/Resources/Images/user.png" />
-                    </Border.Background>
-                </Border>
+            <Grid  HorizontalAlignment="Center" Height="94" Width="110">
+                
                 <Button Style="{StaticResource IconButton}"
                         Height="NaN" Width="NaN" Click="ChangeAvatar_Click">
                     <Button.Content>
-
-                        <Image Height="64" Width="64"  HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Source="pack://application:,,,/Resources/Icons/Camera.png"/>
+                        <Border CornerRadius="60,60,60,60" Margin="0,0,0,-6">
+                            <Border.Background>
+                                <ImageBrush x:Name="MyAvatar" Stretch="Fill" ImageSource="pack://application:,,,/Resources/Images/user.png" />
+                            </Border.Background>
+                        </Border>
                     </Button.Content>
                 </Button>
             </Grid>

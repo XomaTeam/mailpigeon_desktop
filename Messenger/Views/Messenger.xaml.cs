@@ -41,11 +41,11 @@ namespace Messenger.Views
             Messages_lb.Items.Clear();
             try
             {
-                ContactAvatar.Source = await vm.GetAvatar(newId);
+                ContactAvatar.ImageSource = await vm.GetAvatar(newId);
             }
             catch
             {
-                ContactAvatar.Source = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
+                ContactAvatar.ImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
             }
             Username_tb.Text = await vm.GetUserNickname(newId);
             CreateDialogMessages(newId);

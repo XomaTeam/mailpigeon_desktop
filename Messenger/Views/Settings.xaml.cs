@@ -29,11 +29,12 @@ namespace Messenger.Views
         {
             InitializeComponent();
             vm = new SettingsVM();
+            this.Loaded += On_Loaded;
             ChatController.instance.UsernameChanged += OnUsernameUpdated;
             SetName(ChatController.instance.myUsername);
         }
 
-        private async void SetName(string username)
+        private void SetName(string username)
         {
             Username_tb.Text = username;
         }
@@ -60,6 +61,11 @@ namespace Messenger.Views
             Application.Current.MainWindow = new MainWindow();
             Application.Current.MainWindow.Show();
             pastWindow.Close();
+        }
+
+        private async void On_Loaded(object sender, RoutedEventArgs e)
+        {
+            MyAvatar.Source = await vm.GetMyAvatar();
         }
     }
 }

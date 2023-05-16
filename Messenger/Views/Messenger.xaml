@@ -9,7 +9,7 @@
       d:DesignHeight="760" d:DesignWidth="1060"
       Title="Messenger"
       Style="{StaticResource  MessengerPage}" >
-    
+
     <Page.Resources>
         <ImageBrush x:Key="Contact" ImageSource="pack://application:,,,/Resources/Images/user.png"/>
     </Page.Resources>
@@ -32,9 +32,12 @@
         <!--Отображение контакта с которым ведётся переписка-->
         <Grid Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <Image x:Name="ContactAvatar" Width="32" Height="32"
-                         Source="pack://application:,,,/Resources/Images/user.png" Margin="10 0 20 0"/>
-                <TextBlock x:Name="Username_tb" Text="Имя Фамилия" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724"/>
+                <Border Margin="20,0,0,0" Height="40" Width="43" CornerRadius="60,60,60,60">
+                    <Border.Background>
+                        <ImageBrush x:Name="ContactAvatar" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <TextBlock x:Name="Username_tb" Text="Имя Фамилия" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Width="724" Margin="20,0,0,0"/>
             </StackPanel>
         </Grid>
 

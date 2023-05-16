@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Messenger.ViewModels
 {
@@ -28,6 +29,11 @@ namespace Messenger.ViewModels
         {
             await api.Logout();
             return true;
+        }
+
+        public async Task<BitmapImage> GetMyAvatar()
+        {
+            return await api.GetAvatar(ChatController.instance.myID);
         }
     }
 }

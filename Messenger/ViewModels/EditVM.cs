@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Messenger.ViewModels
 {
@@ -21,15 +22,17 @@ namespace Messenger.ViewModels
 
         public void EditName(string newName)
         {
-            if (String.IsNullOrEmpty(newName))
-                return;
-
             api.EditName(newName);
         }
 
-        public void EditAvatar(byte[] avatar)
+        public void EditAvatar(string filepath)
         {
-            api.SendAvatar(avatar);
+            api.SendAvatar(filepath);
+        }
+
+        public async Task<BitmapImage> GetMyAvatar()
+        {
+            return await api.GetAvatar(ChatController.instance.myID);
         }
     }
 }
