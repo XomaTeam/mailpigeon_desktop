@@ -117,6 +117,7 @@
     <Compile Include="Models\ApiRepository.cs" />
     <Compile Include="Models\ChatController.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Database\Contact.cs" />
     <Compile Include="Models\Database\UserData.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Elements\MyMessengeBubble.xaml.cs">

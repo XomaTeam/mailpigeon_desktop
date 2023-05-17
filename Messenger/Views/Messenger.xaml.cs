@@ -41,7 +41,7 @@ namespace Messenger.Views
             Messages_lb.Items.Clear();
             await SetDialogUsername(newId);
             await CreateDialogMessages(newId);
-            SetDialogAvatar(newId);
+            await SetDialogAvatar(newId);
         }
 
         private async Task SetDialogUsername(int userID)
@@ -161,5 +161,6 @@ namespace Messenger.Views
             if(e.Key == Key.Enter)
                 SendMessage();
         }
+
     }
 }

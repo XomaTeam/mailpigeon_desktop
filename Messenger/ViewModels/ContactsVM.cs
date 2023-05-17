@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.IO;
+using System.Windows.Navigation;
 
 namespace Messenger.ViewModels
 {
@@ -19,9 +21,11 @@ namespace Messenger.ViewModels
             db = new SQLiteDb();
         }
 
-        public async Task<List<Contact>> GetAllUsers()
+        public async Task<List<Models.Contact>> GetAllUsers()
         {
-            return await api.GetAllUsers();
+            var users = await api.GetAllUsers();
+            await db.SetContacts(users);
+            return users;
         }
 
         public async Task<BitmapImage> GetUserAvatar(int userId)
@@ -33,5 +37,6 @@ namespace Messenger.ViewModels
         {
             api.UpdateSessionInfo();
         }
+
     }
 }

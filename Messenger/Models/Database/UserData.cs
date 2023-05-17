@@ -11,6 +11,7 @@ namespace Messenger.Models.Database
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        public string username { get; set; }
         public string access_token { get; set; }
         public string refresh_token { get; set; }
         public string userId { get; set; }
@@ -26,6 +27,14 @@ namespace Messenger.Models.Database
         {
             this.access_token = access_token;
             this.refresh_token = refresh_token;
+        }
+
+        public UserData(string access_token, string refresh_token, string userID, string username)
+        {
+            this.access_token = access_token;
+            this.refresh_token = refresh_token;
+            this.userId = userID;
+            this.username = username;
         }
 
         public UserData() { }

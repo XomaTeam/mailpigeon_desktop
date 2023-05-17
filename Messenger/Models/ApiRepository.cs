@@ -239,12 +239,6 @@ namespace Messenger.Models
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/all");
 
-            if (response.StatusCode == HttpStatusCode.Forbidden)
-                throw new Exception("Сессия устарела");
-
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-                throw new Exception("Ошибка сервера");
-
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new Exception("Ошибка получения контактов");
 
@@ -256,14 +250,38 @@ namespace Messenger.Models
         {
             try
             {
-                var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/avatar/download?user_id=" + userId);
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
-                bitmap.EndInit();
-                return bitmap;
+                var avatarPath = await db.GetAvatarPath(userId);
+                if (avatarPath != null)
+                {
+                    var savedAvatar = new BitmapImage(new Uri(avatarPath));
+                    return savedAvatar;
+                }
+                else
+                {
+                    var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/avatar/download?user_id=" + userId);
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = await response.Content.ReadAsStreamAsync();
+                    bitmap.EndInit();
+                    await SaveAvatarToLocalStorage(bitmap, userId);
+                    return bitmap;
+                }
             }
             catch { return null; }
+        }
+
+        private async Task SaveAvatarToLocalStorage(BitmapImage image, int userId)
+        {
+            if (image == null)
+                return;
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+            string pathToFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "avatar" + userId);
+            using (var fs = new FileStream(pathToFile, FileMode.Create))
+            {
+                encoder.Save(fs);
+            }
+            await db.SetOneContact(userId, pathToFile);
         }
 
         public async void SendAvatar(string filepath)
@@ -326,7 +344,7 @@ namespace Messenger.Models
         {
             if(ws.State != WebSocketState.Open)
             {
-                await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Закрытие для перезапуска", tokenSource.Token);
+                //await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Закрытие для перезапуска", tokenSource.Token);
                 await ConnectWebSocket();
             }
         }

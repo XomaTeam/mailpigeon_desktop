@@ -26,7 +26,7 @@ namespace Messenger.Views
     public partial class Contacts : Page
     {
         ContactsVM vm = new ContactsVM();
-        List<Contact> contacts;
+        List<Contact> contacts = new List<Contact>();
 
         public Contacts()
         {
@@ -36,8 +36,6 @@ namespace Messenger.Views
 
         private async void SetContacts()
         {
-            try
-            {
                 vm.UpdateContacts();
                 contacts = await vm.GetAllUsers();
                 contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
@@ -50,24 +48,23 @@ namespace Messenger.Views
                         user.avatar = Properties.Resources.DefaultAvatarPath;
                 }
                 ContactsList.ItemsSource = contacts;
-            }
-            catch(Exception ex) 
-            {
-                Debug.WriteLine(ex.Message);
-            }
         }
 
         private void Search(string search_name)
         {
-            if (!string.IsNullOrEmpty(search_name))
-            {
-                var finded = from contact in contacts where contact.username.ToLower().StartsWith(search_name.ToLower()) select contact;
-                ContactsList.ItemsSource = finded;
-            }
-            else
+            if(contacts.Count == 0)
+                return; 
+
+            if (string.IsNullOrEmpty(search_name))
             {
                 ContactsList.ItemsSource = contacts;
+                return;
             }
+
+            var finded = from contact in contacts
+                            where contact.username.ToLower().StartsWith(search_name.ToLower())
+                            select contact;
+            ContactsList.ItemsSource = finded;
         }
 
         private void Hamburger_Click(object sender, RoutedEventArgs e)
