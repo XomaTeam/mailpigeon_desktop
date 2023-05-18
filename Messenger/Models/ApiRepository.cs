@@ -139,9 +139,9 @@ namespace Messenger.Models
             return true;
         }
 
-        public async Task<Tokens> Login(string username, string password)
+        public async Task<Tokens> Login(string email, string password)
         {
-            var data = new UserLogin(username, password);
+            var data = new UserLogin(email, password);
             var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/login", data);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -213,7 +213,7 @@ namespace Messenger.Models
             
             if (user != null)
             {
-                return user.username;
+                return user.name + " " + user.surname;
             }
 
             return null;
@@ -232,7 +232,7 @@ namespace Messenger.Models
             {
                 await db.SetMyID(user.id);
                 ChatController.instance.myID = user.id;
-                ChatController.instance.myUsername = user.username;
+                ChatController.instance.myUsername = user.name + " " + user.surname;
             }
         }
 

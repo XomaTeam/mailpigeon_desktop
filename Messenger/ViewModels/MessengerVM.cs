@@ -37,7 +37,7 @@ namespace Messenger.ViewModels
         public async Task<string> GetUserNickname(int userID)
         {
             var user = await api.GetUser(userID);
-            return user.username;
+            return user.name + " " + user.surname;
         }
 
         public async Task<BitmapImage> GetAvatar(int userID)

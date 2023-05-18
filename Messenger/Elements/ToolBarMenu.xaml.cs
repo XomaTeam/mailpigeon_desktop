@@ -25,6 +25,7 @@ namespace Messenger.Elements
             InitializeComponent();
             this.TrayPopupOpen += LeftClick;
             this.IconSource = new BitmapImage(new Uri(Properties.Resources.AppIcon));
+            
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

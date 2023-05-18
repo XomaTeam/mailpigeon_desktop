@@ -23,4 +23,5 @@
             <MenuItem Click="Close_Click" Header="Закрыть"></MenuItem>
         </ContextMenu>
     </tb:TaskbarIcon.ContextMenu>
+    
 </tb:TaskbarIcon>
