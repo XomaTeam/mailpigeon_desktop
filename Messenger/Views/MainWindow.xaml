@@ -10,9 +10,7 @@
         Height="700" Width="1060" Closing="OnClosing"
         
         >
-    <!--<Viewbox StretchDirection="Both" Stretch="Uniform">-->
-        <Grid>
-            <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
-        </Grid>
-    <!--</Viewbox>-->
+    <Grid>
+        <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
 </Window>
