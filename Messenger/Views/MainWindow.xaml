@@ -8,11 +8,8 @@
         Title="Голубь"
         MinHeight="650" MinWidth="800"
         Height="700" Width="1060"
-        
         >
-    <!--<Viewbox StretchDirection="Both" Stretch="Uniform">-->
-        <Grid>
-            <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
-        </Grid>
-    <!--</Viewbox>-->
+    <Grid>
+        <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
 </Window>
