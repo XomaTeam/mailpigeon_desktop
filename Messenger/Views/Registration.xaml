@@ -31,8 +31,33 @@
 
             <!--Логин-->
             <Grid Margin="0 0 0 33">
-                <TextBox x:Name="TBLogin" TextChanged="TBLogin_TextChanged"/>
-                <TextBlock x:Name="LoginTip" Text="Логин"  Style="{StaticResource Tip}"/>
+                <TextBox x:Name="email_tb" TextChanged="email_tb_TextChanged"/>
+                <TextBlock x:Name="emailTip" Text="Email"  Style="{StaticResource Tip}"/>
+            </Grid>
+            
+
+            <!--Имя-->
+            <Grid Margin="0 0 0 33">
+                <Button  Panel.ZIndex="2" HorizontalAlignment="Right"
+                         Style="{StaticResource IconButton}" Margin="0 0 40 0" Click="Button_Click">
+                    <Image Source="pack://application:,,,/Resources/Icons/Eye.png"/>
+                </Button>
+
+                <TextBox x:Name="name_tb" Margin="25,0,25,-2"/>
+
+                <TextBlock x:Name="name_tip" Text="Имя"  Style="{StaticResource Tip}"/>
+            </Grid>
+
+            <!--Фамилия-->
+            <Grid Margin="0 0 0 33">
+                <Button  Panel.ZIndex="2" HorizontalAlignment="Right"
+                         Style="{StaticResource IconButton}" Margin="0 0 40 0" Click="Button_Click">
+                    <Image Source="pack://application:,,,/Resources/Icons/Eye.png"/>
+                </Button>
+
+                <TextBox x:Name="surname_tb" Margin="25,0,25,-2" />
+
+                <TextBlock x:Name="surnameTip" Text="Фамилия"  Style="{StaticResource Tip}"/>
             </Grid>
             <!--Пароль-->
             <Grid Margin="0 0 0 33">
@@ -86,11 +111,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Margin="10,179,0,146" Grid.RowSpan="2" Background="Transparent">
-                <TextBlock x:Name="PWLength" Text="• Не менее 4 и не более 30 знаков" TextWrapping="Wrap"/>
-                <TextBlock x:Name="PWUppSym" Text="• Содержит хотя бы 1 заглавный символ" TextWrapping="Wrap"/>
-                <TextBlock x:Name="PWLowSym" Text="• Содержит хотя бы 1 строчный символ" TextWrapping="Wrap"/>
-                <TextBlock x:Name="PWSpecSym" Text="• Содержит хотя бы 1 спец. символ" TextWrapping="Wrap"/>
-                <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow" Padding="0,20,0,0" Panel.ZIndex="2" Foreground="#FFFF7C7C" Width="265" Height="188" UseLayoutRounding="False"/>
+                <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow" Padding="0,20,0,0" Panel.ZIndex="2" Foreground="#FFFF7C7C" Width="265" Height="370" UseLayoutRounding="False"/>
             </StackPanel>
         </Grid>
 

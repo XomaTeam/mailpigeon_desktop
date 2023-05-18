@@ -27,11 +27,12 @@ namespace Messenger.Models
         [StringLength(30, MinimumLength = 8, ErrorMessage = "Минимальная длина пароля 8 символа, максимальная 30")]
         public string password { get; set; }
 
-        public UserRegistration(string name, string surname, string password)
+        public UserRegistration(string name, string surname, string email, string password)
         {
             this.name = name;
             this.surname = surname;
             this.password = password;
+            this.email = email;
         }
     }
 }

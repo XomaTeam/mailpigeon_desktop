@@ -37,6 +37,7 @@ namespace Messenger.ViewModels
             {
                 var avatar = await GetUserAvatar(user.id, reloadAvatars);
                 var lastMessage = await GetLastMessage(user.id);
+                user.CreateUsername();
 
                 if (lastMessage != null)
                     user.lastMessageTime = lastMessage.created_at;

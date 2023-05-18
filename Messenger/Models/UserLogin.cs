@@ -10,7 +10,6 @@ namespace Messenger.Models
 {
     public class UserLogin
     {
-
         [EmailAddress(ErrorMessage = "Не является email адресом")]
         public string email { get; set; }
 

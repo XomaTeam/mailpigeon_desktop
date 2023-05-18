@@ -147,7 +147,7 @@ namespace Messenger.Models
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("Неверный логин или пароль");
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка входа");
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -164,9 +164,9 @@ namespace Messenger.Models
             return true;
         }
 
-        public async Task<Tokens> SignUp(string username, string password)
+        public async Task<Tokens> SignUp(string name, string surname, string email, string password)
         {
-            var data = new UserLogin(username, password);
+            var data = new UserRegistration(name, surname, email, password);
             var results = new List<ValidationResult>();
 
             if (!Validator.TryValidateObject(data, new ValidationContext(data), results, true))
@@ -174,7 +174,7 @@ namespace Messenger.Models
 
             var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/signup", data);
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception(response.StatusCode.ToString());
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -192,7 +192,7 @@ namespace Messenger.Models
                 throw new Exception(results[0].ErrorMessage);
 
             var response = await TokenyzePost($"{ApiAddresses.BASE_URL}/users/edit", data);
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception(response.StatusCode.ToString());
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -205,7 +205,7 @@ namespace Messenger.Models
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
             
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения данных пользователя");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -222,7 +222,7 @@ namespace Messenger.Models
         public async Task UpdateSessionInfo()
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения данных пользователя");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -240,7 +240,7 @@ namespace Messenger.Models
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/all");
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения контактов");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
