@@ -12,5 +12,6 @@ namespace Messenger.Models
         public int id {  get; set; }
         public string username { get; set; }
         public object avatar { get; set; }
+        public DateTime lastMessageTime { get; set; }
     }
 }

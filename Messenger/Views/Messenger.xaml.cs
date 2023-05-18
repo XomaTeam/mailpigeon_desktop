@@ -87,15 +87,17 @@ namespace Messenger.Views
             if (msg == null)
                 return;
 
-            if (msg.sender_id == ChatController.instance.myID)
+            if (msg.sender_id == ChatController.instance.myID && msg.recipient_id == ChatController.instance.currentDialog)
             {
                 CreateMyMessage(msg, true);
             }
-            else if (msg.recipient_id == ChatController.instance.myID)
+            else if (msg.recipient_id == ChatController.instance.myID && msg.sender_id == ChatController.instance.currentDialog)
             {
                 CreateHisMessage(msg, true);
             }
-            Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
+
+            if(Messages_lb.Items.Count > 0)
+                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
         }
 
         private void CreateMyMessage(Message message, bool drawOnBottom)

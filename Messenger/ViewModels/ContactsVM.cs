@@ -38,5 +38,12 @@ namespace Messenger.ViewModels
             api.UpdateSessionInfo();
         }
 
+        public async Task<Message> GetLastMessage(int userID)
+        {
+            var message = await api.GetMessages(1, userID);
+            if (message.Count > 0)
+                return message[0];
+            return null;
+        }
     }
 }
