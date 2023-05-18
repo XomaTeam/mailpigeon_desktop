@@ -42,7 +42,7 @@ namespace Messenger.ViewModels
 
         public async Task<BitmapImage> GetAvatar(int userID)
         {
-            return await api.GetAvatar(userID);
+            return await api.GetAvatar(userID, false);
         }
     }
 }

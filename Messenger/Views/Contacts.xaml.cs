@@ -39,13 +39,13 @@ namespace Messenger.Views
         private async void SetContacts()
         {
             vm.UpdateContacts();
-            contacts = await vm.GetContacts();
+            contacts = await vm.GetContacts(reloadAvatars: true);
             ContactsList.ItemsSource = contacts;
         }
 
         private async void OnNewMessage(Message msg)
         {
-            contacts = await vm.GetContacts();
+            contacts = await vm.GetContacts(reloadAvatars: false);
             ContactsList.ItemsSource = contacts;
         }
 
@@ -82,7 +82,7 @@ namespace Messenger.Views
 
         private void Search_tb_Changed(object sender, TextChangedEventArgs e)
         {
-            var tb = (TextBox)sender;
+            var tb = sender as TextBox;
             Search(tb.Text);
             if (tb.Text.Length == 0)
             {

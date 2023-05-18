@@ -33,7 +33,7 @@ namespace Messenger.ViewModels
 
         public async Task<BitmapImage> GetMyAvatar()
         {
-            return await api.GetAvatar(ChatController.instance.myID);
+            return await api.GetAvatar(ChatController.instance.myID, false);
         }
 
         public async Task UpdateUserInfo()

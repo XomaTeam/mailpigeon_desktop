@@ -29,13 +29,13 @@ namespace Messenger.ViewModels
             return users;
         }
 
-        public async Task<List<Models.Contact>> GetContacts()
+        public async Task<List<Models.Contact>> GetContacts(bool reloadAvatars)
         {
             var contacts = await GetAllUsers();
-            contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
+
             foreach (var user in contacts)
             {
-                var avatar = await GetUserAvatar(user.id);
+                var avatar = await GetUserAvatar(user.id, reloadAvatars);
                 var lastMessage = await GetLastMessage(user.id);
 
                 if (lastMessage != null)
@@ -48,13 +48,15 @@ namespace Messenger.ViewModels
                 else
                     user.avatar = Properties.Resources.DefaultAvatarPath;
             }
+
+            contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
             contacts = contacts.OrderByDescending(p => p.lastMessageTime).ToList();
             return contacts;
         }
 
-        public async Task<BitmapImage> GetUserAvatar(int userId)
+        public async Task<BitmapImage> GetUserAvatar(int userId, bool forceReload)
         {
-            return await api.GetAvatar(userId);
+            return await api.GetAvatar(userId, forceReload);
         }
 
         public async void UpdateContacts()

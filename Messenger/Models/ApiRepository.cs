@@ -247,12 +247,12 @@ namespace Messenger.Models
             return JsonConvert.DeserializeObject<List<Contact>>(stringResponse);
         }
 
-        public async Task<BitmapImage> GetAvatar(int userId)
+        public async Task<BitmapImage> GetAvatar(int userId, bool forceReload)
         {
             try
             {
                 var avatarPath = await db.GetAvatarPath(userId);
-                if (avatarPath != null)
+                if (avatarPath != null && !forceReload)
                 {
                     var savedAvatar = new BitmapImage(new Uri(avatarPath));
                     return savedAvatar;
