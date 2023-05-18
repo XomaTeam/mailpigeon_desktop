@@ -43,7 +43,7 @@
 
         <Grid Grid.Row="1" Grid.Column="1" >
             <!--Отображение сообщений-->
-            <ListBox x:Name="Messages_lb" VirtualizingPanel.ScrollUnit="Pixel" HorizontalContentAlignment="Stretch" Margin="52,0,52,65" Style="{StaticResource MessagesPool}"/>
+            <ListBox x:Name="Messages_lb" VirtualizingPanel.ScrollUnit="Pixel" HorizontalContentAlignment="Stretch" Margin="10,0,0,65" Style="{StaticResource MessagesPool}"/>
             <!--Отправка сообщения Textbox'ом-->
             <Grid  VerticalAlignment="Bottom" >
                 <TextBox x:Name="Message_tb" Padding="0,0,50,0" Margin="50 5" Width="auto" TextChanged="Message_tb_TextChanged"/>

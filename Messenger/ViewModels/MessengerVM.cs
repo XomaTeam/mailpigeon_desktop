@@ -24,6 +24,11 @@ namespace Messenger.ViewModels
             return await api.GetMessages(count, recipientId);
         }
 
+        public async Task<List<Message>> GetMessages(int count, int recipientId, int offset)
+        {
+            return await api.GetMessages(count, recipientId, offset);
+        }
+
         public async void SendMessage(string message)
         {
             api.SendMessage(message, ChatController.instance.currentDialog, null, ChatController.instance.myID);
