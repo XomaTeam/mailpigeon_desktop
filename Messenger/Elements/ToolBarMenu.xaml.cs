@@ -23,15 +23,22 @@ namespace Messenger.Elements
         public ToolBarMenu()
         {
             InitializeComponent();
+            this.TrayPopupOpen += LeftClick;
+            this.IconSource = new BitmapImage(new Uri(Properties.Resources.AppIcon));
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Application.Current.MainWindow).forceClose = true;
             Application.Current.MainWindow.Close();
         }
 
-        private void TaskbarIcon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.Show();
+        }
+
+        private void LeftClick(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Show();
         }

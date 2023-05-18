@@ -7,6 +7,7 @@ using System.Runtime.Remoting;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 using System.Windows.Media.Animation;
 
 namespace Messenger.Models.Database
@@ -18,9 +19,9 @@ namespace Messenger.Models.Database
         public SQLiteDb()
         {
             conn = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "pegeo.db3"));
-            conn.CreateTableAsync<Contact>().Wait();
+                        "pegeon.db3"));
             conn.CreateTableAsync<UserData>().Wait();
+            conn.CreateTableAsync<Contact>().Wait();
         }
 
         public async Task<bool> IsUserLoggedIn()

@@ -8,14 +8,19 @@
         mc:Ignorable="d"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         Height="450" Width="800"
-        PopupActivation="LeftClick"
-        MouseLeftButtonDown="TaskbarIcon_MouseLeftButtonDown">
+        PopupActivation="LeftClick">
+    <tb:TaskbarIcon.TrayPopup>
+        <TextBlock></TextBlock>
+    </tb:TaskbarIcon.TrayPopup>
     <tb:TaskbarIcon.TrayToolTip>
-        <TextBlock Margin="0,0,0,0" Text="Почтовый Голубь"></TextBlock>
+        <Border Background="White">
+            <TextBlock Margin="5,5,5,5" Text="Почтовый Голубь"></TextBlock>
+        </Border>
     </tb:TaskbarIcon.TrayToolTip>
     <tb:TaskbarIcon.ContextMenu>
         <ContextMenu Background="White">
-            <MenuItem Click="MenuItem_Click" Header="Закрыть"></MenuItem>
+            <MenuItem x:Name="Open" Click="Open_Click" Header="Открыть"></MenuItem>
+            <MenuItem Click="Close_Click" Header="Закрыть"></MenuItem>
         </ContextMenu>
     </tb:TaskbarIcon.ContextMenu>
 </tb:TaskbarIcon>
