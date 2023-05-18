@@ -187,6 +187,7 @@ namespace Messenger.Models
         {
             var data = new UserLogin(newName, "");
             var results = new List<ValidationResult>();
+
             if(!Validator.TryValidateObject(data,new ValidationContext(data), results, false))
                 throw new Exception(results[0].ErrorMessage);
 
@@ -197,7 +198,7 @@ namespace Messenger.Models
             var responseString = await response.Content.ReadAsStringAsync();
             Tokens tokens = JsonConvert.DeserializeObject<Tokens>(responseString);
 
-            db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
+            await db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
         }
             
         public async Task<string> GetMyName()
