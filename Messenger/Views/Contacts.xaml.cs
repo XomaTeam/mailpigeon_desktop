@@ -39,32 +39,14 @@ namespace Messenger.Views
         private async void SetContacts()
         {
             vm.UpdateContacts();
-            contacts = await vm.GetAllUsers();
-            contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
-
-            foreach (var user in contacts)
-            {
-                var avatar = await vm.GetUserAvatar(user.id);
-                var lastMessage = await vm.GetLastMessage(user.id);
-
-                if (lastMessage != null)
-                    user.lastMessageTime = lastMessage.created_at;
-                else
-                    user.lastMessageTime = DateTime.MinValue;
-
-                if(avatar != null)
-                    user.avatar = avatar;
-                else
-                    user.avatar = Properties.Resources.DefaultAvatarPath;
-            }
-
-            contacts = contacts.OrderByDescending(p => p.lastMessageTime).ToList();
+            contacts = await vm.GetContacts();
             ContactsList.ItemsSource = contacts;
         }
 
-        private void OnNewMessage(Message msg)
+        private async void OnNewMessage(Message msg)
         {
-            contacts = contacts.OrderByDescending(p => p.lastMessageTime).ToList();
+            contacts = await vm.GetContacts();
+            ContactsList.ItemsSource = contacts;
         }
 
         private void Search(string search_name)
