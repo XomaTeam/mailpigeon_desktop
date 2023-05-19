@@ -65,6 +65,22 @@ namespace Messenger.Views
                 emailTip.Visibility = Visibility.Hidden;
         }
 
+        private void name_tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (name_tb.Text.Length == 0)
+                nameTip.Visibility = Visibility.Visible;
+            else
+                nameTip.Visibility = Visibility.Hidden;
+        }
+
+        private void surname_tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (surname_tb.Text.Length == 0)
+                surnameTip.Visibility = Visibility.Visible;
+            else
+                surnameTip.Visibility = Visibility.Hidden;
+        }
+
         private void Password_Changed(object sender, RoutedEventArgs e)
         {
             if (TBPassword.Password.Length == 0)
@@ -132,5 +148,7 @@ namespace Messenger.Views
                 ConfirmVisible.Visibility = Visibility.Hidden;
             }
         }
+
+
     }
 }

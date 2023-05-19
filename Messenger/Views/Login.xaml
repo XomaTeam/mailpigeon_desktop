@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Messenger.Views"
       xmlns:model="clr-namespace:Messenger.Models"
       mc:Ignorable="d" 
-      d:DesignHeight="760" d:DesignWidth="1060"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="Login" 
       Style="{StaticResource LogAuthPage}">
 
@@ -26,10 +26,10 @@
 
             <TextBlock Text="Вход" FontSize="42" FontWeight="SemiBold"
                        HorizontalAlignment="Center" Margin="0 0 0 100"/>
-            <!--Логин-->
+            <!--Email-->
             <Grid Margin="0 0 0 60">
                 <TextBox x:Name="TBLogin" TextChanged="TBLogin_TextChanged"/>
-                <TextBlock x:Name="LoginTip" Text="Логин" Style="{StaticResource Tip}" Margin="0,13,278,0" HorizontalAlignment="Right"/>
+                <TextBlock x:Name="LoginTip" Text="Email" Style="{StaticResource Tip}" Margin="0,13,278,0" HorizontalAlignment="Right"/>
             </Grid>
             <!--Пароль-->
             <Grid Margin="0 0 0 60">
@@ -58,8 +58,9 @@
                 </Button.Content>
             </Button>
         </StackPanel>
-        <TextBlock x:Name="error_lbl" TextWrapping="WrapWithOverflow"  Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="268" Foreground="#FFFF4B4B" Margin="31,280,31,0" Grid.Column="2" Height="349">
-            
+        <!--ТекстБлок с описанием проблемы, ошибки-->
+        <TextBlock x:Name="error_lbl" Grid.Row="1" Grid.Column="2" Width="auto" Height="auto" Margin="0 0 0 60"
+                    VerticalAlignment="Center" Foreground="{StaticResource Warning}" TextWrapping="WrapWithOverflow">
         </TextBlock>
     </Grid>
 </Page>

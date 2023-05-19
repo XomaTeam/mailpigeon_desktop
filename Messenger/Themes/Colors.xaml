@@ -4,8 +4,9 @@
     <!--Основные цвета-->
     <SolidColorBrush x:Key="clrButton" Color="#AB69FF"/>
     <SolidColorBrush x:Key="clrSecondaryText" Color="#909090"/>
+    <SolidColorBrush x:Key="Warning" Color="#FFFF4B4B"/>
 
-     <!--Акценты-->
+    <!--Акценты-->
     <SolidColorBrush x:Key="OneLevelAccent" Color="#ADADAD"/>
     <SolidColorBrush x:Key="TwoLevelAccent" Color="#848484"/>
     <SolidColorBrush x:Key="ThreeLevelAccent" Color="#484848"/>
