@@ -8,7 +8,7 @@ namespace Messenger.Models
 {
     public  class Dialog
     {
-        public User recipient { get; set; }
+        public Contact recipient { get; set; }
         public Message last_message { get; set; }
         public int count_unread_messages { get; set; }
     }

@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Navigation;
 using Messenger.Views;
+using System.Data.Entity.Infrastructure;
 
 namespace Messenger.ViewModels
 {
@@ -22,42 +23,36 @@ namespace Messenger.ViewModels
             db = new SQLiteDb();
         }
 
-        public async Task<List<Models.Contact>> GetAllUsers()
-        {
-            var users = await api.GetAllUsers();
-            await db.SetContacts(users);
-            return users;
-        }
-
         public async Task<List<Models.Dialog>> GetAllDialogs()
         {
-            var dialogs = 
+            var dialogs = await api.GetAllDialogs();
+            var contacts = new List<Models.Contact>();
+            foreach (var dialog in dialogs)
+            {
+                contacts.Add(dialog.recipient);
+            }
+            await db.SetContacts(contacts);
+            return dialogs;
         }
 
-        public async Task<List<Models.Contact>> GetContacts(bool reloadAvatars)
+        public async Task<List<Dialog>> GetDialogs(bool reloadAvatars)
         {
-            var contacts = await GetAllUsers();
+            var dialogs = await GetAllDialogs();
 
-            foreach (var user in contacts)
+            foreach (var dialog in dialogs)
             {
-                var avatar = await GetUserAvatar(user.id, reloadAvatars);
-                var lastMessage = await GetLastMessage(user.id);
-                user.CreateUsername();
-
-                if (lastMessage != null)
-                    user.lastMessageTime = lastMessage.created_at;
-                else
-                    user.lastMessageTime = DateTime.MinValue;
+                var avatar = await GetUserAvatar(dialog.recipient.id, reloadAvatars);
+                var lastMessage = dialog.last_message;
+                dialog.recipient.CreateUsername();
 
                 if (avatar != null)
-                    user.avatar = avatar;
+                    dialog.recipient.avatar = avatar;
                 else
-                    user.avatar = Properties.Resources.DefaultAvatarPath;
+                    dialog.recipient.avatar = Properties.Resources.DefaultAvatarPath;
             }
 
-            contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
-            contacts = contacts.OrderByDescending(p => p.lastMessageTime).ToList();
-            return contacts;
+            dialogs = dialogs.OrderByDescending(p => p.last_message.created_at).ToList();
+            return dialogs;
         }
 
         public async Task<BitmapImage> GetUserAvatar(int userId, bool forceReload)

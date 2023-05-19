@@ -247,6 +247,17 @@ namespace Messenger.Models
             return JsonConvert.DeserializeObject<List<Contact>>(stringResponse);
         }
 
+        public async Task<List<Dialog>> GetAllDialogs()
+        {
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/dialogs");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Ошибка получения диалогов");
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Dialog>>(stringResponse);
+        }
+
         public async Task<BitmapImage> GetAvatar(int userId, bool forceReload)
         {
             try

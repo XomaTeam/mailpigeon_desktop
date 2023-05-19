@@ -27,6 +27,7 @@ namespace Messenger.Views
     public partial class Contacts : Page
     {
         ContactsVM vm = new ContactsVM();
+        List<Dialog> dialogs = new List<Dialog>();
         List<Contact> contacts = new List<Contact>();
 
         public Contacts()
@@ -39,19 +40,27 @@ namespace Messenger.Views
         private async void SetContacts()
         {
             vm.UpdateContacts();
-            contacts = await vm.GetContacts(reloadAvatars: true);
+            dialogs = await vm.GetDialogs(reloadAvatars: true);
+            foreach(var dialog in dialogs)
+            {
+                contacts.Add(dialog.recipient);
+            }
             ContactsList.ItemsSource = contacts;
         }
 
         private async void OnNewMessage(Message msg)
         {
-            contacts = await vm.GetContacts(reloadAvatars: false);
+            // TODO: Изменить это на более эффективный вариант без запроса
+            if (msg == null)
+                return;
+
+            dialogs = await vm.GetDialogs(reloadAvatars: false);
             ContactsList.ItemsSource = contacts;
         }
 
         private void Search(string search_name)
         {
-            if(contacts.Count == 0)
+            if(dialogs.Count == 0)
                 return; 
 
             if (string.IsNullOrEmpty(search_name))
@@ -60,9 +69,9 @@ namespace Messenger.Views
                 return;
             }
 
-            var finded = from contact in contacts
-                            where contact.username.ToLower().StartsWith(search_name.ToLower())
-                            select contact;
+            var finded = from dialog in dialogs
+                            where dialog.recipient.username.ToLower().StartsWith(search_name.ToLower())
+                            select dialog;
             ContactsList.ItemsSource = finded;
         }
 

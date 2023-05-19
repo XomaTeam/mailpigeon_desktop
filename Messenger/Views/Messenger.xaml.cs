@@ -63,7 +63,6 @@ namespace Messenger.Views
         public async Task CreateDialogMessages(int id)
         {
             List<Message> messages = await vm.GetMessages(50, 0, id);
-
             messages = messages.OrderByDescending(p => p.created_at).ToList();
 
             foreach (Message message in messages)
