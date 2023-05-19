@@ -13,7 +13,7 @@ namespace Messenger.Models
         [EmailAddress(ErrorMessage = "Не является email адресом")]
         public string email { get; set; }
 
-        [StringLength(30, MinimumLength = 8, ErrorMessage = "Минимальная длина пароля 8 символа, максимальная 30")]
+        [StringLength(30, MinimumLength = 8, ErrorMessage = "Минимальная длина пароля 8 символов, максимальная 30")]
         public string password { get; set; }
 
         public UserLogin(string email, string password)
