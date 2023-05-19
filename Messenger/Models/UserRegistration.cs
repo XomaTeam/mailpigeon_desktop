@@ -11,12 +11,12 @@ namespace Messenger.Models
     {
         [Required(ErrorMessage = "Требуется имя")]
         [StringLength(100, ErrorMessage = "Максимальная длина имени 100 символов")]
-        [RegularExpression("[А-Яа-я]+", ErrorMessage = "В логине могут присутствовать только латинские буквы, цифры и нижнее подчеркивание")]
+        [RegularExpression("[А-Яа-я]+", ErrorMessage = "В имене могут присутствовать только буквы кириллицы")]
         public string name { get; set; }
 
         [Required(ErrorMessage = "Требуется фамилия")]
         [StringLength(100, ErrorMessage = "Максимальная длина фамилии 100 символов")]
-        [RegularExpression("[А-Яа-я]+", ErrorMessage = "В логине могут присутствовать только латинские буквы, цифры и нижнее подчеркивание")]
+        [RegularExpression("[А-Яа-я]+", ErrorMessage = "В фамилии могут присутствовать только буквы кириллицы")]
         public string surname { get; set; }
 
         [Required(ErrorMessage = "Требуется email")]
