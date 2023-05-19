@@ -19,9 +19,9 @@ namespace Messenger.ViewModels
             db = new SQLiteDb();
         }
 
-        public async Task<List<Message>> GetMessages(int count, int recipientId)
+        public async Task<List<Message>> GetMessages(int count, int offset, int recipientId)
         {
-            return await api.GetMessages(count, recipientId);
+            return await api.GetMessages(count, offset, recipientId);
         }
 
         public async void SendMessage(string message)
@@ -43,6 +43,14 @@ namespace Messenger.ViewModels
         public async Task<BitmapImage> GetAvatar(int userID)
         {
             return await api.GetAvatar(userID, false);
+        }
+
+        public async Task<List<Message>> GetExtraMessagesInCurrentDialog(int actualMessagesCount)
+        {
+            if(actualMessagesCount < 50)
+                return null;
+
+            return await api.GetMessages(50, actualMessagesCount, ChatController.instance.currentDialog);
         }
     }
 }

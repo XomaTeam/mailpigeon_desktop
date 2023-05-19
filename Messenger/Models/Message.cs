@@ -14,5 +14,6 @@ namespace Messenger.Models
         public int? group_id { get; set; }
         public string message_text { get; set; }
         public DateTime created_at { get; set; }
+        public bool readed { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace Messenger.Views
 
         public async Task CreateDialogMessages(int id)
         {
-            List<Message> messages = await vm.GetMessages(50, id);
+            List<Message> messages = await vm.GetMessages(50, 0, id);
 
             messages = messages.OrderByDescending(p => p.created_at).ToList();
 
@@ -71,15 +72,14 @@ namespace Messenger.Views
                 if (message.sender_id == ChatController.instance.myID)
                 {
                     CreateMyMessage(message, false);
+                    Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
                 }
                 else
                 {
                     CreateHisMessage(message, false);
+                    Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
                 }
             }
-
-            if (Messages_lb.Items.Count > 0)
-                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
         }
 
         private void ReceiveMessage(Message msg)
@@ -90,14 +90,12 @@ namespace Messenger.Views
             if (msg.sender_id == ChatController.instance.myID && msg.recipient_id == ChatController.instance.currentDialog)
             {
                 CreateMyMessage(msg, true);
+                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
             }
             else if (msg.recipient_id == ChatController.instance.myID && msg.sender_id == ChatController.instance.currentDialog)
             {
                 CreateHisMessage(msg, true);
             }
-
-            if(Messages_lb.Items.Count > 0)
-                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - 1]);
         }
 
         private void CreateMyMessage(Message message, bool drawOnBottom)
@@ -108,10 +106,14 @@ namespace Messenger.Views
             TimeZoneInfo zoneInfo = TimeZoneInfo.Local;
             DateTime time = TimeZoneInfo.ConvertTimeFromUtc(message.created_at, zoneInfo);
             bubble.time = time.ToString();
-            if(drawOnBottom)
+            if (drawOnBottom)
+            {
                 Messages_lb.Items.Add(bubble);
+            }
             else
+            {
                 Messages_lb.Items.Insert(0, bubble);
+            }
         }
 
         private void CreateHisMessage(Message message, bool drawOnBottom)
@@ -123,9 +125,13 @@ namespace Messenger.Views
             DateTime time = TimeZoneInfo.ConvertTimeFromUtc(message.created_at, zoneInfo);
             bubble.time = time.ToString();
             if (drawOnBottom)
+            {
                 Messages_lb.Items.Add(bubble);
+            }
             else
+            {
                 Messages_lb.Items.Insert(0, bubble);
+            }
         }
 
         private void Send_Clicked(object sender, RoutedEventArgs e)
@@ -164,5 +170,33 @@ namespace Messenger.Views
                 SendMessage();
         }
 
+        private async void Messages_lb_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.VerticalOffset != 0)
+                return;
+
+            if (Messages_lb.Items.Count < 50 || Messages_lb.Items.Count == 0)
+                return;
+
+            var currentCount = Messages_lb.Items.Count;
+            var extraMessages = await vm.GetExtraMessagesInCurrentDialog(currentCount);
+            if (extraMessages == null)
+                return;
+
+            foreach(var message in extraMessages)
+            {
+                if(message.sender_id == ChatController.instance.myID)
+                {
+                    CreateMyMessage(message, false);
+                }
+                else
+                {
+                    CreateHisMessage(message, false);
+                }
+            }
+
+            if(extraMessages.Count > 0)
+                Messages_lb.ScrollIntoView(Messages_lb.Items[Messages_lb.Items.Count - currentCount]);
+        }
     }
 }

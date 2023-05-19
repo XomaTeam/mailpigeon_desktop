@@ -19,7 +19,7 @@ namespace Messenger.Models.Database
         public SQLiteDb()
         {
             conn = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "pegeonmail.db3"));
+                        "pegeonmail1.db3"));
             conn.CreateTableAsync<UserData>().Wait();
             conn.CreateTableAsync<Contact>().Wait();
         }

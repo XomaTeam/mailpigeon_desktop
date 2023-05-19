@@ -29,6 +29,11 @@ namespace Messenger.ViewModels
             return users;
         }
 
+        public async Task<List<Models.Dialog>> GetAllDialogs()
+        {
+            var dialogs = 
+        }
+
         public async Task<List<Models.Contact>> GetContacts(bool reloadAvatars)
         {
             var contacts = await GetAllUsers();
@@ -67,7 +72,7 @@ namespace Messenger.ViewModels
 
         public async Task<Message> GetLastMessage(int userID)
         {
-            var message = await api.GetMessages(1, userID);
+            var message = await api.GetMessages(1, 0, userID);
             if (message.Count > 0)
                 return message[0];
             return null;

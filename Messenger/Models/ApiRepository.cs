@@ -290,9 +290,9 @@ namespace Messenger.Models
             var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/avatar/upload", filepath);
         }
 
-        public async Task<List<Message>> GetMessages(int count, int recipientId)
+        public async Task<List<Message>> GetMessages(int count, int offset, int recipientId)
         {
-            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}&offset={offset}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения сообщений");
