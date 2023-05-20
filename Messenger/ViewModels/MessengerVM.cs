@@ -24,10 +24,6 @@ namespace Messenger.ViewModels
             return await api.GetMessages(count, offset, recipientId);
         }
 
-        public async Task<List<Message>> GetMessages(int count, int recipientId, int offset)
-        {
-            return await api.GetMessages(count, recipientId, offset);
-        }
 
         public async void SendMessage(string message)
         {

@@ -313,18 +313,6 @@ namespace Messenger.Models
             return messages;
         }
 
-        public async Task<List<Message>> GetMessages(int count, int recipientId, int offset)
-        {
-            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}&offset={offset}");
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception("Ошибка получения сообщений");
-
-            string stringResponse = await response.Content.ReadAsStringAsync();
-            var messages = JsonConvert.DeserializeObject<List<Message>>(stringResponse);
-            return messages;
-        }
-
         public async Task<User> GetUser(int userID)
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/get?user_id={userID}");
