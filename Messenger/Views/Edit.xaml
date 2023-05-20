@@ -57,7 +57,7 @@
                 <Grid Style="{StaticResource TextBoxGrid}">
                 <TextBlock Text="Фамилия" Panel.ZIndex="1" Background="White" Padding="5 0 5 0" Foreground="{StaticResource TwoLevelAccent}"
                            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 4 0 0" FontSize="14"/>
-                <TextBox x:Name="Surname_tb" Width="230" Height="30" Margin="8 15 8 0" FontSize="14" TextChanged="Login_tb_Changed"/>
+                <TextBox x:Name="Surname_tb" Width="230" Height="30" Margin="8 15 8 0" FontSize="14" TextChanged="Surname_tb_Changed"/>
                 </Grid>
                 
             </StackPanel>

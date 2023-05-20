@@ -62,6 +62,11 @@ namespace Messenger.Views
 
         }
 
+        private void Surname_tb_Changed(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
         private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -90,5 +95,7 @@ namespace Messenger.Views
             else
                 MyAvatar.ImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultAvatarPath));
         }
+
+
     }
 }
