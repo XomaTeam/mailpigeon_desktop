@@ -43,7 +43,7 @@ namespace Messenger.Views
 
             try
             {
-                if (await vm.SignUp(TBLogin.Text, password))
+                if (await vm.SignUp(name_tb.Text, surname_tb.Text, email_tb.Text, password))
                     NavigationService.Navigate(new Messenger());
             }
             catch(Exception ex) { error_lbl.Text = ex.Message; }
@@ -57,12 +57,28 @@ namespace Messenger.Views
 
         
 
-        private void TBLogin_TextChanged(object sender, TextChangedEventArgs e)
+        private void email_tb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (TBLogin.Text.Length == 0)
-                LoginTip.Visibility = Visibility.Visible;
+            if (email_tb.Text.Length == 0)
+                emailTip.Visibility = Visibility.Visible;
             else
-                LoginTip.Visibility = Visibility.Hidden;
+                emailTip.Visibility = Visibility.Hidden;
+        }
+
+        private void name_tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (name_tb.Text.Length == 0)
+                nameTip.Visibility = Visibility.Visible;
+            else
+                nameTip.Visibility = Visibility.Hidden;
+        }
+
+        private void surname_tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (surname_tb.Text.Length == 0)
+                surnameTip.Visibility = Visibility.Visible;
+            else
+                surnameTip.Visibility = Visibility.Hidden;
         }
 
         private void Password_Changed(object sender, RoutedEventArgs e)
@@ -132,5 +148,7 @@ namespace Messenger.Views
                 ConfirmVisible.Visibility = Visibility.Hidden;
             }
         }
+
+
     }
 }

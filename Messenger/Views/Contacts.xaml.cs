@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Messenger.Views
 {
@@ -26,33 +27,40 @@ namespace Messenger.Views
     public partial class Contacts : Page
     {
         ContactsVM vm = new ContactsVM();
+        List<Dialog> dialogs = new List<Dialog>();
         List<Contact> contacts = new List<Contact>();
 
         public Contacts()
         {
             InitializeComponent();
             SetContacts();
+            ChatController.instance.NewMessage += OnNewMessage;
         }
 
         private async void SetContacts()
         {
-                vm.UpdateContacts();
-                contacts = await vm.GetAllUsers();
-                contacts.RemoveAt(contacts.IndexOf(contacts.FirstOrDefault(p => p.id == ChatController.instance.myID)));
-                foreach (var user in contacts)
-                {
-                        var avatar = await vm.GetUserAvatar(user.id);
-                    if(avatar != null)
-                        user.avatar = avatar;
-                    else
-                        user.avatar = Properties.Resources.DefaultAvatarPath;
-                }
-                ContactsList.ItemsSource = contacts;
+            vm.UpdateContacts();
+            dialogs = await vm.GetDialogs(reloadAvatars: true);
+            foreach(var dialog in dialogs)
+            {
+                contacts.Add(dialog.recipient);
+            }
+            ContactsList.ItemsSource = contacts;
+        }
+
+        private async void OnNewMessage(Message msg)
+        {
+            // TODO: Изменить это на более эффективный вариант без запроса
+            if (msg == null)
+                return;
+
+            dialogs = await vm.GetDialogs(reloadAvatars: false);
+            ContactsList.ItemsSource = contacts;
         }
 
         private void Search(string search_name)
         {
-            if(contacts.Count == 0)
+            if(dialogs.Count == 0)
                 return; 
 
             if (string.IsNullOrEmpty(search_name))
@@ -61,9 +69,9 @@ namespace Messenger.Views
                 return;
             }
 
-            var finded = from contact in contacts
-                            where contact.username.ToLower().StartsWith(search_name.ToLower())
-                            select contact;
+            var finded = from dialog in dialogs
+                            where dialog.recipient.username.ToLower().StartsWith(search_name.ToLower())
+                            select dialog;
             ContactsList.ItemsSource = finded;
         }
 
@@ -83,7 +91,7 @@ namespace Messenger.Views
 
         private void Search_tb_Changed(object sender, TextChangedEventArgs e)
         {
-            var tb = (TextBox)sender;
+            var tb = sender as TextBox;
             Search(tb.Text);
             if (tb.Text.Length == 0)
             {

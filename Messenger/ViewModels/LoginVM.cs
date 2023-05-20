@@ -33,9 +33,9 @@ namespace Messenger.ViewModels
             return result;
         }
 
-        public async Task<bool> SignUp(string username, string password)
+        public async Task<bool> SignUp(string name, string surname, string email, string password)
         {
-            Tokens tokens = await api.SignUp(username, password);
+            Tokens tokens = await api.SignUp(name, surname, email, password);
             List<ValidationResult> results = new List<ValidationResult>();
             bool result = Validator.TryValidateObject(tokens, new ValidationContext(tokens), results, true);
             if (result)

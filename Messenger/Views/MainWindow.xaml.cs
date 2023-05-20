@@ -1,6 +1,8 @@
-﻿using Messenger.ViewModels;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using Messenger.ViewModels;
 using Messenger.Views;
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Messenger.Elements;
 
 namespace Messenger
 {
@@ -23,11 +26,14 @@ namespace Messenger
     public partial class MainWindow : Window
     {
         LoginVM vm;
+        public bool forceClose = false;
+
         public MainWindow()
         {
             InitializeComponent();
             vm = new LoginVM();
             TryLogin();
+            CreateTaskBarIcon();
         }
 
         private async void TryLogin()
@@ -43,6 +49,17 @@ namespace Messenger
             {
                 MainFrame.NavigationService.Navigate(new Login());
             }
+        }
+
+        private async void CreateTaskBarIcon()
+        {
+            var taskBarIcon = new ToolBarMenu();
+        }
+
+        private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = !forceClose;
+            this.Hide();
         }
     }
 }

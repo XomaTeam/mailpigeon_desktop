@@ -47,8 +47,8 @@ namespace Messenger.Views
                 if(isAvatarChanged)
                     vm.EditAvatar(newAvatarPath);
 
-                if (!String.IsNullOrEmpty(Login_tb.Text))
-                    vm.EditName(Login_tb.Text);
+                if (!String.IsNullOrEmpty(Name_tb.Text))
+                    vm.EditName(Name_tb.Text);
 
             }
             catch (Exception ex)
@@ -57,7 +57,7 @@ namespace Messenger.Views
             }
         }
 
-        private void Login_tb_Changed(object sender, TextChangedEventArgs e)
+        private void Name_tb_Changed(object sender, TextChangedEventArgs e)
         {
 
         }

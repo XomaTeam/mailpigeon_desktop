@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppIcon" xml:space="preserve">
+    <value>pack://application:,,,/Resources/Icons/AppIcon.ico</value>
+    <comment>Иконка приложения</comment>
+  </data>
   <data name="DefaultAvatarPath" xml:space="preserve">
     <value>pack://application:,,,/Resources/Images/user.png</value>
     <comment>Путь до картинки аватара по умолчанию</comment>

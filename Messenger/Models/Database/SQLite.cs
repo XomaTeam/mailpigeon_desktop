@@ -7,6 +7,7 @@ using System.Runtime.Remoting;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 using System.Windows.Media.Animation;
 
 namespace Messenger.Models.Database
@@ -18,9 +19,9 @@ namespace Messenger.Models.Database
         public SQLiteDb()
         {
             conn = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "pegeo.db3"));
-            conn.CreateTableAsync<Contact>().Wait();
+                        "pegeonmail1.db3"));
             conn.CreateTableAsync<UserData>().Wait();
+            conn.CreateTableAsync<Contact>().Wait();
         }
 
         public async Task<bool> IsUserLoggedIn()
@@ -109,13 +110,15 @@ namespace Messenger.Models.Database
             var existing = contacts.FirstOrDefault(p => p.id == contact.id);
             if (existing != null)
             {
-                existing.username = contact.username;
+                existing.name = contact.name;
+                existing.surname = contact.surname;
                 conn.UpdateAsync(existing).Wait();
             }
             else
             {
                 var newContact = new Database.Contact();
-                newContact.username = contact.username;
+                newContact.name = contact.name;
+                newContact.surname = contact.surname;
                 newContact.id = contact.id;
                 conn.InsertAsync(newContact).Wait();
             }
@@ -127,14 +130,16 @@ namespace Messenger.Models.Database
             var existing = contacts.FirstOrDefault(p => p.id == contact.id);
             if (existing != null)
             {
-                existing.username = contact.username;
+                existing.name = contact.name;
+                existing.surname = contact.surname;
                 existing.avatarPath = avatarPath;
                 conn.UpdateAsync(existing).Wait();
             }
             else
             {
                 var newContact = new Database.Contact();
-                newContact.username = contact.username;
+                newContact.name = contact.name;
+                newContact.surname = contact.surname;
                 newContact.id = contact.id;
                 newContact.avatarPath = avatarPath;
                 conn.InsertAsync(newContact).Wait();

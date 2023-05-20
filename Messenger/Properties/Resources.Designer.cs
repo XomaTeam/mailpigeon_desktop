@@ -61,6 +61,15 @@ namespace Messenger.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на pack://application:,,,/Resources/Icons/AppIcon.ico.
+        /// </summary>
+        internal static string AppIcon {
+            get {
+                return ResourceManager.GetString("AppIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на pack://application:,,,/Resources/Images/user.png.
         /// </summary>
         internal static string DefaultAvatarPath {

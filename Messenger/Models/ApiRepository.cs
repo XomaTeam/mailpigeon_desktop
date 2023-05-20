@@ -139,15 +139,15 @@ namespace Messenger.Models
             return true;
         }
 
-        public async Task<Tokens> Login(string username, string password)
+        public async Task<Tokens> Login(string email, string password)
         {
-            var data = new UserLogin(username, password);
+            var data = new UserLogin(email, password);
             var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/login", data);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("Неверный логин или пароль");
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка входа");
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -164,9 +164,9 @@ namespace Messenger.Models
             return true;
         }
 
-        public async Task<Tokens> SignUp(string username, string password)
+        public async Task<Tokens> SignUp(string name, string surname, string email, string password)
         {
-            var data = new UserLogin(username, password);
+            var data = new UserRegistration(name, surname, email, password);
             var results = new List<ValidationResult>();
 
             if (!Validator.TryValidateObject(data, new ValidationContext(data), results, true))
@@ -174,7 +174,7 @@ namespace Messenger.Models
 
             var response = await NonTokenyzePost($"{ApiAddresses.BASE_URL}/auth/signup", data);
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception(response.StatusCode.ToString());
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -187,24 +187,25 @@ namespace Messenger.Models
         {
             var data = new UserLogin(newName, "");
             var results = new List<ValidationResult>();
+
             if(!Validator.TryValidateObject(data,new ValidationContext(data), results, false))
                 throw new Exception(results[0].ErrorMessage);
 
             var response = await TokenyzePost($"{ApiAddresses.BASE_URL}/users/edit", data);
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception(response.StatusCode.ToString());
 
             var responseString = await response.Content.ReadAsStringAsync();
             Tokens tokens = JsonConvert.DeserializeObject<Tokens>(responseString);
 
-            db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
+            await db.SetTokensAsync(tokens.access_token, tokens.refresh_token);
         }
             
         public async Task<string> GetMyName()
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
             
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения данных пользователя");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -212,7 +213,7 @@ namespace Messenger.Models
             
             if (user != null)
             {
-                return user.username;
+                return user.name + " " + user.surname;
             }
 
             return null;
@@ -221,7 +222,7 @@ namespace Messenger.Models
         public async Task UpdateSessionInfo()
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения данных пользователя");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -231,7 +232,7 @@ namespace Messenger.Models
             {
                 await db.SetMyID(user.id);
                 ChatController.instance.myID = user.id;
-                ChatController.instance.myUsername = user.username;
+                ChatController.instance.myUsername = user.name + " " + user.surname;
             }
         }
 
@@ -239,19 +240,30 @@ namespace Messenger.Models
         {
             var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/all");
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения контактов");
 
             var stringResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Contact>>(stringResponse);
         }
 
-        public async Task<BitmapImage> GetAvatar(int userId)
+        public async Task<List<Dialog>> GetAllDialogs()
+        {
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/dialogs");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Ошибка получения диалогов");
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Dialog>>(stringResponse);
+        }
+
+        public async Task<BitmapImage> GetAvatar(int userId, bool forceReload)
         {
             try
             {
                 var avatarPath = await db.GetAvatarPath(userId);
-                if (avatarPath != null)
+                if (avatarPath != null && !forceReload)
                 {
                     var savedAvatar = new BitmapImage(new Uri(avatarPath));
                     return savedAvatar;
@@ -289,9 +301,9 @@ namespace Messenger.Models
             var response = await TokenyzePostImage($"{ApiAddresses.BASE_URL}/avatar/upload", filepath);
         }
 
-        public async Task<List<Message>> GetMessages(int count, int recipientId)
+        public async Task<List<Message>> GetMessages(int count, int offset, int recipientId)
         {
-            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}");
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/messages/get?recipient_id={recipientId}&limit={count}&offset={offset}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Ошибка получения сообщений");
