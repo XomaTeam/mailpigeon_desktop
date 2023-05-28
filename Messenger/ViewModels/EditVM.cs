@@ -20,14 +20,20 @@ namespace Messenger.ViewModels
             db = new SQLiteDb();
         }
 
-        public void EditName(string newName)
+        public void EditName(string name, string surname, string email)
         {
-            api.EditName(newName);
+            api.EditName(name, surname, email);
         }
 
         public void EditAvatar(string filepath)
         {
             api.SendAvatar(filepath);
+        }
+
+        public async Task<User> GetUser()
+        {
+            var user = await api.GetUser();
+            return user;
         }
 
         public async Task<BitmapImage> GetMyAvatar()

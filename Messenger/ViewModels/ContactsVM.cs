@@ -51,7 +51,7 @@ namespace Messenger.ViewModels
                     dialog.recipient.avatar = Properties.Resources.DefaultAvatarPath;
             }
 
-            dialogs = dialogs.OrderByDescending(p => p.last_message.created_at).ToList();
+            dialogs = dialogs.OrderByDescending(p => { if (p.last_message != null) { return p.last_message.created_at; } else return DateTime.MinValue; }).ToList();
             return dialogs;
         }
 

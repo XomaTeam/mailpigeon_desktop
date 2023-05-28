@@ -183,9 +183,9 @@ namespace Messenger.Models
             return tokens;
         }
 
-        public async void EditName(string newName)
+        public async void EditName(string name, string surname, string email)
         {
-            var data = new UserLogin(newName, "");
+            var data = new UserEdit(name, surname, email);
             var results = new List<ValidationResult>();
 
             if(!Validator.TryValidateObject(data,new ValidationContext(data), results, false))
@@ -214,6 +214,24 @@ namespace Messenger.Models
             if (user != null)
             {
                 return user.name + " " + user.surname;
+            }
+
+            return null;
+        }
+
+        public async Task<User> GetUser()
+        {
+            var response = await TokenyzeGet($"{ApiAddresses.BASE_URL}/users/me");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Ошибка получения данных пользователя");
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var user = JsonConvert.DeserializeObject<User>(stringResponse);
+
+            if (user != null)
+            {
+                return user;
             }
 
             return null;

@@ -39,17 +39,27 @@ namespace Messenger.Views
             NavigationService.GoBack();
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Debug.WriteLine(newAvatarPath);
+                var user = await vm.GetUser();
+
                 if(isAvatarChanged)
                     vm.EditAvatar(newAvatarPath);
 
-                if (!String.IsNullOrEmpty(Name_tb.Text))
-                    vm.EditName(Name_tb.Text);
-
+                if (string.IsNullOrEmpty(Name_tb.Text))
+                {
+                    vm.EditName(user.name, Surname_tb.Text, user.email);
+                }
+                else if(string.IsNullOrEmpty (Surname_tb.Text))
+                {
+                    vm.EditName(Name_tb.Text, user.surname, user.email);
+                }
+                else if(!string.IsNullOrEmpty(Surname_tb.Text) && !string.IsNullOrEmpty(Name_tb.Text))
+                {
+                    vm.EditName(Name_tb.Text, Surname_tb.Text, user.email);
+                }
             }
             catch (Exception ex)
             {
@@ -58,6 +68,10 @@ namespace Messenger.Views
         }
 
         private void Name_tb_Changed(object sender, TextChangedEventArgs e)
+        {
+        }
+
+        private void Surname_tb_Changed(object sender, TextChangedEventArgs e)
         {
 
         }

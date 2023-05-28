@@ -133,6 +133,7 @@
     <Compile Include="Models\MessageToSend.cs" />
     <Compile Include="Models\Tokens.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserEdit.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\UserRegistration.cs" />
     <Compile Include="ViewModels\ContactsVM.cs" />

@@ -1,14 +1,14 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Data.SQLite;
 using System.Runtime.Remoting;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
 using System.Windows.Media.Animation;
+using SQLite;
 
 namespace Messenger.Models.Database
 {
@@ -19,7 +19,7 @@ namespace Messenger.Models.Database
         public SQLiteDb()
         {
             conn = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "pegeonmail1.db3"));
+                        "pegeon.db3"));
             conn.CreateTableAsync<UserData>().Wait();
             conn.CreateTableAsync<Contact>().Wait();
         }
